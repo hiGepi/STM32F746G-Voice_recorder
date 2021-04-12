@@ -1134,3 +1134,40 @@
 2021-04-12 14:55:33,735 [INFO] IPUIPlugin:64 - create IPUIPlugin
 2021-04-12 14:55:33,738 [INFO] ApiDbMcu:458 - Load IP Config File for PDM2PCM
 2021-04-12 14:55:33,747 [INFO] OpenFileManager:323 - Restore cursor
+2021-04-12 15:12:44,618 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 585240936 Bytes (937426944)
+2021-04-12 15:12:44,850 [INFO] BlockDiagram:2735 - set Specific Code input for plugin: SYS
+2021-04-12 15:12:44,850 [INFO] BlockDiagram:2735 - set Specific Code input for plugin: RCC
+2021-04-12 15:12:44,850 [INFO] BlockDiagram:2735 - set Specific Code input for plugin: NVIC
+2021-04-12 15:12:44,851 [INFO] CodeGenerator:641 - code generatio: config db path: C:\ST\STM32CubeIDE_1.5.1\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.2.1.202103241236\\db\
+2021-04-12 15:12:45,575 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\license.tmp_save
+2021-04-12 15:12:45,661 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\license.tmp
+2021-04-12 15:12:45,700 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2021-04-12 15:12:45,704 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\cortex.tmp_save
+2021-04-12 15:12:45,755 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\cortex.tmp
+2021-04-12 15:12:45,765 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\stm32f7xx_it.c_save
+2021-04-12 15:12:45,825 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\stm32f7xx_it.c
+2021-04-12 15:12:45,828 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\stm32f7xx_it.h_save
+2021-04-12 15:12:45,874 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\stm32f7xx_it.h
+2021-04-12 15:12:45,881 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\stm32f7xx_hal_msp.c_save
+2021-04-12 15:12:45,951 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\stm32f7xx_hal_msp.c
+2021-04-12 15:12:45,953 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\system.tmp_save
+2021-04-12 15:12:45,993 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\system.tmp
+2021-04-12 15:12:45,998 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\stm32f7xx_hal_conf.h_save
+2021-04-12 15:12:46,061 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\stm32f7xx_hal_conf.h
+2021-04-12 15:12:46,094 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\main.h_save
+2021-04-12 15:12:46,143 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\main.h
+2021-04-12 15:12:46,146 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\main.c_save
+2021-04-12 15:12:46,227 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\main.c
+2021-04-12 15:12:46,783 [INFO] ProjectBuilder:2460 - Time for Copy HAL[1] : 36mS.
+2021-04-12 15:12:46,786 [INFO] ProjectBuilder:3418 - Project Generator version: 3.13.0-B3
+2021-04-12 15:12:47,113 [INFO] ConfigFileManager:1242 - The Die is : DIE449
+2021-04-12 15:12:47,138 [INFO] ApiDbMcu:458 - Load IP Config File for FATFS
+2021-04-12 15:12:47,159 [INFO] ApiDbMcu:458 - Load IP Config File for FREERTOS
+2021-04-12 15:12:47,163 [INFO] ApiDbMcu:458 - Load IP Config File for LIBJPEG
+2021-04-12 15:12:47,210 [INFO] ApiDbMcu:458 - Load IP Config File for LWIP
+2021-04-12 15:12:47,238 [INFO] ApiDbMcu:458 - Load IP Config File for MBEDTLS
+2021-04-12 15:12:47,261 [INFO] ApiDbMcu:458 - Load IP Config File for USB_DEVICE
+2021-04-12 15:12:47,269 [INFO] ApiDbMcu:458 - Load IP Config File for USB_HOST
+2021-04-12 15:12:49,072 [INFO] ProjectBuilder:3584 - Time for Generating toolchain IDE Files: 2286mS.
+2021-04-12 15:12:49,073 [INFO] ProjectBuilder:2339 - Time for Copy CMSIS : 1mS.
+2021-04-12 15:12:49,074 [INFO] ProjectBuilder:2339 - Time for Copy CMSIS : 0mS.
