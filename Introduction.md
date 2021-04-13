@@ -1,12 +1,17 @@
-# Bienvenue sur le projet Expandeur MIDI V2 !
-(En vérité c'est un Piano tactile avec une meilleure qualité audio)
+# Bienvenue sur le projet d'enregistreur vocal !
 
 ## Introduction
-Les mini-projets du premier s'étant terminés d'une très bonne manière pour la plupart des élèves de la promotion, un mini-projet s'est malheuresement terminé avec quelques soucis de puissance de calcul. Par miracle la carte du second semestre est bien plus puissante et possède plus de fonctionnalités ainsi que de vastes horizons explorés comme non explorés sur internet !
+Paricipant à un TER sur de la reconnaissance vocale, la génération d'un modèle de reconnaissance vocale nécessite d'avoir un dictionnaire de mot et des enregistrements audio associés. Ce dictionnaire contient nottament des nom de cellules qui ne se trouvent pas dans les bases de données open-source. Ainsi, nous avons créé un script Matlab permettant d'enregistrer la voix de volontaires. Afin de permettre d'enregistrer un plus grand nombre de données, j'ai décidé de porter ce script sous forme d'application sur la carte STM32F746G.
 
-Voici donc la nouvelle carte si bien introduite.
+Voici donc la nouvelle carte.
 
 <img src="Rapport/carte.png" alt="Carte de développement" width="500"/>
 
 Ainsi que le schéma synoptique expliquant le fonctionnement du projet.
 ![Synoptique](Rapport/synoptique.png)
+
+## Carte SD
+
+## Codec WM8994
+
+## Interface tactile
