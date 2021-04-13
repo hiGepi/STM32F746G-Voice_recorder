@@ -5,10 +5,11 @@ Paricipant à un TER sur de la reconnaissance vocale, la génération d'un modè
 
 Voici donc la nouvelle carte.
 
-<img src="Rapport/carte.png" alt="Carte de développement" width="500"/>
+<img src="Rapport/Carte.png" alt="Carte de développement" width="500"/>
 
 Ainsi que le schéma synoptique expliquant le fonctionnement du projet.
-![Synoptique](Rapport/synoptique.png)
+
+<img src="Rapport/Synoptique.png" alt="Synoptique" width="500"/>
 
 ## Carte SD
 
