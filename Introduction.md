@@ -12,6 +12,11 @@ Ainsi que le schéma synoptique expliquant le fonctionnement du projet.
 <img src="Rapport/Synoptique.png" alt="Synoptique" width="500"/>
 
 ## Carte SD
+### Problème lors de la migration en v1.16.1
+création d'un nouveau projet de 0 avec les drivers du projet gitlab -> nul
+
+migration + import settings de l'ancien -> nul
+
 
 ## Codec WM8994
 

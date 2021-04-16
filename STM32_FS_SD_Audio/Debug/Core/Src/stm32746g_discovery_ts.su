@@ -1,0 +1,8 @@
+stm32746g_discovery_ts.c:146:9:BSP_TS_Init	24	static
+stm32746g_discovery_ts.c:176:9:BSP_TS_DeInit	4	static
+stm32746g_discovery_ts.c:186:9:BSP_TS_ITConfig	32	static
+stm32746g_discovery_ts.c:211:9:BSP_TS_ITGetStatus	8	static
+stm32746g_discovery_ts.c:222:9:BSP_TS_GetState	104	static
+stm32746g_discovery_ts.c:342:9:BSP_TS_Get_GestureId	24	static
+stm32746g_discovery_ts.c:386:6:BSP_TS_ITClear	8	static
+stm32746g_discovery_ts.c:404:9:BSP_TS_ResetTouchData	24	static
