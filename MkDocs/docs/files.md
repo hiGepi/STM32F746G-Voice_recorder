@@ -1,6 +1,6 @@
 # Fichiers de bibliothèques
 
-Vous retrouverez ici les .h et .c nécessaires au bon fonctionnement des bibliothèques décrites précédemment.
+Vous retrouverez ici les .h et .c nécessaires au bon fonctionnement des bibliothèques décrites précédemment ainsi que des projets .
 
 ## Fichiers Audio
 
@@ -10,3 +10,10 @@ Vous retrouverez ici les .h et .c nécessaires au bon fonctionnement des bibliot
 
 [FatFs](https://github.com/hiGepi/STM32F746G-Voice_recorder/tree/main/Libraries/FATFS)
 
+## Projet SD + Audio + FreeRTOS
+
+[Projet vierge](https://github.com/hiGepi/STM32F746G-Voice_recorder/tree/main/STM32_FS_SD_Audio)
+
+## Enregistreur vocal
+
+[]

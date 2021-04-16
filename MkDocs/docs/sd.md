@@ -19,6 +19,9 @@ Rapide, flexible, plus complexe et plus d'E/S
 
 ## Ajout la bibliothèque SD
 
+[Vidéo de démonstration](https://www.youtube.com/watch?v=I9KDN1o6924&t=474s&ab_channel=STMicroelectronics)
+
+
 On se rend sur l'interface de configuration graphique de STM32CubeMX, puis on active le périphérique SDMMC1 dans Connectivity.
 
 ![Configuration SDMMC1](img/sd/config_sdmmc.png)
