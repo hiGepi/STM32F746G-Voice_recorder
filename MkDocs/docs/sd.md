@@ -7,20 +7,26 @@ La communication avec la carte SD se fera à l'aide de l'interface SDMMC ainsi q
 
 ### SDMMC
 
-Rapide, flexible, plus complexe et plus d'E/S
+L'interface SDMMC permet la communication avec des MultiMediaCards (MMC), Secure Digital (SD) memory cards et autres périphériques SD (Avec une fréquence d'horloge allant jusqu'à 50 Mhz). L'interface SDMMC permet de gérer des bus de données de 1-bit, 4-bits et 8-bits.
+
+Parmi 3 interfaces possibles (SPI, SDIO,SDMMC) pour communiquer avec la carte SD l'interface SDMMC est la plus rapide, flexible mais plus complexe et possédant plus d'E/S.
 
 <center>![Diagramme SDMMC](img/sd/sdmmc_diagram.PNG)</center>
 *Diagramme SDMMC*
 
-[Lien doc SDMMC](https://www.st.com/content/ccc/resource/training/technical/product_training/group0/a7/61/d8/cf/a0/c8/4d/08/STM32F7_Peripheral_SDMMC/files/STM32F7_Peripheral_SDMMC.pdf/_jcr_content/translations/en.STM32F7_Peripheral_SDMMC.pdf)
+[Lien présentation SDMMC](https://www.st.com/content/ccc/resource/training/technical/product_training/group0/a7/61/d8/cf/a0/c8/4d/08/STM32F7_Peripheral_SDMMC/files/STM32F7_Peripheral_SDMMC.pdf/_jcr_content/translations/en.STM32F7_Peripheral_SDMMC.pdf)
+
+[Lien doc SDMMC](https://www.st.com/resource/en/user_manual/dm00189702-description-of-stm32f7-hal-and-lowlayer-drivers-stmicroelectronics.pdf#page=613)
 
 ### FatFs
+
+FAT, acronyme de *file allocation table* est un système de fichiers (Organisation des fichiers au sein d'un volume logique) devenu un standard de l'industrie. Il est simple et robuste et tout à fait adapté à l'utilisation pour une carte SD pour de l'embarqué.
+
 [Lien doc FatFs](https://www.st.com/resource/en/user_manual/dm00105259-developing-applications-on-stm32cube-with-fatfs-stmicroelectronics.pdf)
 
 ## Ajout la bibliothèque SD
 
-[Vidéo de démonstration](https://www.youtube.com/watch?v=I9KDN1o6924&t=474s&ab_channel=STMicroelectronics)
-
+[Vidéo de création d'un nouveau projet pour l'utilisation de la carte SD](https://www.youtube.com/watch?v=I9KDN1o6924&t=474s&ab_channel=STMicroelectronics)
 
 On se rend sur l'interface de configuration graphique de STM32CubeMX, puis on active le périphérique SDMMC1 dans Connectivity.
 
@@ -43,5 +49,3 @@ Enfin, on n'oubliera pas de changer la configuration du connecteur dans Project 
 <center>![Configuration Linker](img/sd/config_linker.png)</center>
 
 ## Fonctions principales
-
-![ ](img/sd/)

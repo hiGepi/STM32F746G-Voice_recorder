@@ -1,4 +1,4 @@
-# Fichiers de bibliothèques
+# Fichiers STM32F746G-Discovery
 
 Vous retrouverez ici les .h et .c nécessaires au bon fonctionnement des bibliothèques décrites précédemment ainsi que des projets .
 
@@ -16,4 +16,4 @@ Vous retrouverez ici les .h et .c nécessaires au bon fonctionnement des bibliot
 
 ## Enregistreur vocal
 
-[]
+[Projet d'Informatique Industrielle](https://github.com/hiGepi/STM32F746G-Voice_recorder/tree/main/Voice_recorder)
