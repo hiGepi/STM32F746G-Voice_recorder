@@ -17,7 +17,7 @@ Rapide, flexible, plus complexe et plus d'E/S
 ### FatFs
 [Lien doc FatFs](https://www.st.com/resource/en/user_manual/dm00105259-developing-applications-on-stm32cube-with-fatfs-stmicroelectronics.pdf)
 
-## Création d'un projet avec la bibliothèque SD
+## Ajout la bibliothèque SD
 
 On se rend sur l'interface de configuration graphique de STM32CubeMX, puis on active le périphérique SDMMC1 dans Connectivity.
 

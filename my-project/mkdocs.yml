@@ -5,5 +5,6 @@ nav:
   - Carte SD: sd.md
   - Audio: audio.md
   - Application: app.md
+  - Fichiers: files.md
 theme: readthedocs
 
