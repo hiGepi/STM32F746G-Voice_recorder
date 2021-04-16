@@ -19430,3 +19430,10 @@ java.util.ConcurrentModificationException
 2021-04-16 15:56:50,175 [INFO] NvicIntPanel:90 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,473x248,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
 2021-04-16 16:05:21,416 [WARN] IpParametersView:138 - Warning: This peripheral hasn't parameters
 2021-04-16 16:40:38,511 [INFO] NvicIntPanel:90 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,702x336,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-04-16 17:01:09,572 [INFO] NvicIntPanel:90 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-04-16 17:01:10,594 [INFO] DbMcusDocs:143 - JSON generation date=Mon Feb 08 14:35:07 CET 2021 (1612791307)
+2021-04-16 17:01:10,781 [INFO] DbMcusDocs:79 - Found 617 MCUs documents
+2021-04-16 17:07:58,501 [WARN] IP:2088 - LayerIdx_L1 not found: check if there is a RefParameter without a condition.
+2021-04-16 17:08:01,612 [INFO] NvicIntPanel:90 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,702x336,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-04-16 17:08:02,365 [WARN] IP:2088 - LayerIdx_L1 not found: check if there is a RefParameter without a condition.
+2021-04-16 17:08:10,056 [WARN] IP:2088 - LayerIdx_L1 not found: check if there is a RefParameter without a condition.
