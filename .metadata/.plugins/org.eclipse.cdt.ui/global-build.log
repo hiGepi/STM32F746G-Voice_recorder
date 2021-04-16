@@ -1,0 +1,24 @@
+03:02:30 **** Build of configuration Debug for project STM32_FS_SD_Audio ****
+make -j24 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F746xx -c -I../Core/Inc -I../Drivers/STM32F7xx_HAL_Driver/Inc -I../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F7xx/Include -I../Drivers/CMSIS/Include -I../FATFS/Target -I../FATFS/App -I../Middlewares/Third_Party/FatFs/src -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "STM32_FS_SD_Audio.elf" @"objects.list"   -mcpu=cortex-m7 -T"C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\STM32_FS_SD_Audio\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM32_FS_SD_Audio.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: STM32_FS_SD_Audio.elf
+ 
+arm-none-eabi-objdump -h -S  STM32_FS_SD_Audio.elf  > "STM32_FS_SD_Audio.list"
+arm-none-eabi-objcopy  -O binary  STM32_FS_SD_Audio.elf  "STM32_FS_SD_Audio.bin"
+arm-none-eabi-size   STM32_FS_SD_Audio.elf 
+   text	   data	    bss	    dec	    hex	filename
+  85976	    140	  41596	 127712	  1f2e0	STM32_FS_SD_Audio.elf
+Finished building: default.size.stdout
+ 
+Finished building: STM32_FS_SD_Audio.bin
+ 
+Finished building: STM32_FS_SD_Audio.list
+ 
+03:02:36 **** Incremental Build of configuration Debug for project STM32_FS_SD_Audio ****
+make -j24 all 
+arm-none-eabi-size   STM32_FS_SD_Audio.elf 
+   text	   data	    bss	    dec	    hex	filename
+  85976	    140	  41596	 127712	  1f2e0	STM32_FS_SD_Audio.elf
+Finished building: default.size.stdout
+ 

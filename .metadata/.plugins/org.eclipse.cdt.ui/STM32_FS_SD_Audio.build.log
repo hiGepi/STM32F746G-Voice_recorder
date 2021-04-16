@@ -1,0 +1,10 @@
+03:02:36 **** Incremental Build of configuration Debug for project STM32_FS_SD_Audio ****
+make -j24 all 
+arm-none-eabi-size   STM32_FS_SD_Audio.elf 
+   text	   data	    bss	    dec	    hex	filename
+  85976	    140	  41596	 127712	  1f2e0	STM32_FS_SD_Audio.elf
+Finished building: default.size.stdout
+ 
+
+03:02:36 Build Finished. 0 errors, 0 warnings. (took 343ms)
+

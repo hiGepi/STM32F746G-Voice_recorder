@@ -1,0 +1,9 @@
+site_name: Audio recorder
+repo_url: https://github.com/hiGepi/STM32F746G-Voice_recorder/
+nav: 
+  - Projet: index.md
+  - Carte SD: sd.md
+  - Audio: audio.md
+  - Application: app.md
+theme: readthedocs
+

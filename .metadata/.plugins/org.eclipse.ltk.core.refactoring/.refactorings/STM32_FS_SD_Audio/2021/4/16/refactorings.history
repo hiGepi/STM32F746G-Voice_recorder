@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;STM32_FS_SD_Audio/STM32_FS_SD Debug.launch&apos; to &apos;STM32_FS_SD_Audio Debug.launch&apos;" description="Rename resource &apos;STM32_FS_SD Debug.launch&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="STM32_FS_SD Debug.launch" name="STM32_FS_SD_Audio Debug.launch" stamp="1618529420582" updateReferences="true"/>
+</session>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Voice_recorder/demo_STM32CubeIDE_GitLab.launch&apos; to &apos;Voice_recorder.launch&apos;" description="Rename resource &apos;demo_STM32CubeIDE_GitLab.launch&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="demo_STM32CubeIDE_GitLab.launch" name="Voice_recorder.launch" stamp="1618240703840" updateReferences="true"/>
+</session>

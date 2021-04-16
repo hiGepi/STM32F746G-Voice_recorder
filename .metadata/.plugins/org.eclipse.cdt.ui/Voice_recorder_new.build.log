@@ -1,0 +1,10 @@
+23:38:17 **** Incremental Build of configuration Debug for project Voice_recorder_new ****
+make -j24 all 
+arm-none-eabi-size   Voice_recorder_new.elf 
+   text	   data	    bss	    dec	    hex	filename
+  77880	    184	  37032	 115096	  1c198	Voice_recorder_new.elf
+Finished building: default.size.stdout
+ 
+
+23:38:18 Build Finished. 0 errors, 0 warnings. (took 286ms)
+

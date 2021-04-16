@@ -1142,14 +1142,8 @@ void AudioTask(void const * argument)
 	for(;;)
 	{
 		while(audio_rec_buffer_state != BUFFER_OFFSET_HALF);
-		RL_sep((uint16_t*)AUDIO_BUFFER_IN,AUDIO_BLOCK_SIZE);
-		treatment();
-		RL_cat2((uint16_t*)AUDIO_BUFFER_OUT,AUDIO_BLOCK_SIZE);
 		while(audio_rec_buffer_state != BUFFER_OFFSET_FULL);
-		RL_sep((uint16_t*)(AUDIO_BUFFER_IN+(AUDIO_BLOCK_SIZE)),AUDIO_BLOCK_SIZE);
-		treatment();
-		RL_cat2((uint16_t*)(AUDIO_BUFFER_OUT+(AUDIO_BLOCK_SIZE)),AUDIO_BLOCK_SIZE);
-		osDelay(2);
+		osDelay(1);
 	}
   /* USER CODE END AudioTask */
 }
