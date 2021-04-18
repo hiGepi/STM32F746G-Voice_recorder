@@ -26338,3 +26338,27 @@ java.util.ConcurrentModificationException
 2021-04-18 23:49:42,768 [INFO] ProjectBuilder:3584 - Time for Generating toolchain IDE Files: 1700mS.
 2021-04-18 23:49:42,769 [INFO] ProjectBuilder:2339 - Time for Copy CMSIS : 1mS.
 2021-04-18 23:49:42,774 [INFO] ProjectBuilder:2339 - Time for Copy CMSIS : 0mS.
+2021-04-19 00:39:59,523 [INFO] TasksAndQueuesTab:742 - Dynamic
+2021-04-19 00:39:59,524 [WARN] TasksAndQueuesTab:748 - 128 128
+2021-04-19 00:39:59,524 [WARN] TasksAndQueuesTab:760 - max value is: 16384.0
+2021-04-19 00:39:59,525 [INFO] TasksAndQueuesTab:742 - Dynamic
+2021-04-19 00:39:59,525 [WARN] TasksAndQueuesTab:748 - 4096 128
+2021-04-19 00:39:59,525 [WARN] TasksAndQueuesTab:760 - max value is: 16384.0
+2021-04-19 00:39:59,525 [INFO] TasksAndQueuesTab:742 - Dynamic
+2021-04-19 00:39:59,525 [WARN] TasksAndQueuesTab:748 - 2048 128
+2021-04-19 00:39:59,525 [WARN] TasksAndQueuesTab:760 - max value is: 16384.0
+2021-04-19 00:39:59,525 [INFO] TasksAndQueuesTab:742 - Dynamic
+2021-04-19 00:39:59,525 [WARN] TasksAndQueuesTab:748 - 1024 128
+2021-04-19 00:39:59,525 [WARN] TasksAndQueuesTab:760 - max value is: 16384.0
+2021-04-19 00:40:00,665 [INFO] TasksAndQueuesTab:742 - Dynamic
+2021-04-19 00:40:00,665 [WARN] TasksAndQueuesTab:748 - 128 128
+2021-04-19 00:40:00,666 [WARN] TasksAndQueuesTab:760 - max value is: 16384.0
+2021-04-19 00:40:00,666 [INFO] TasksAndQueuesTab:742 - Dynamic
+2021-04-19 00:40:00,666 [WARN] TasksAndQueuesTab:748 - 4096 128
+2021-04-19 00:40:00,666 [WARN] TasksAndQueuesTab:760 - max value is: 16384.0
+2021-04-19 00:40:00,666 [INFO] TasksAndQueuesTab:742 - Dynamic
+2021-04-19 00:40:00,666 [WARN] TasksAndQueuesTab:748 - 2048 128
+2021-04-19 00:40:00,666 [WARN] TasksAndQueuesTab:760 - max value is: 16384.0
+2021-04-19 00:40:00,666 [INFO] TasksAndQueuesTab:742 - Dynamic
+2021-04-19 00:40:00,666 [WARN] TasksAndQueuesTab:748 - 1024 128
+2021-04-19 00:40:00,666 [WARN] TasksAndQueuesTab:760 - max value is: 16384.0

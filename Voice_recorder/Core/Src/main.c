@@ -1291,19 +1291,85 @@ void Draw_Keyboard(uint8_t MAJ_ENABLE){
 void KeyboardTask(void const * argument)
 {
 	/* USER CODE BEGIN KeyboardTask */
+	uint8_t state = 0, idx=strlen(Name), maj_en = 0;
+	uint16_t Pressed_X, Pressed_Y;
+
+	TS_StateTypeDef  prev_state;
+	TS_StateTypeDef TS_State;
+	prev_state.touchDetected = 0;
+
+	vTaskSuspend(inputHandle);
+
 	BSP_LCD_SetLayerVisible(1, ENABLE);
 	BSP_LCD_SelectLayer(1);
 	BSP_LCD_Clear(0);
 
 	xSemaphoreTake(mutex_LCDHandle, portMAX_DELAY);
-	Draw_Keyboard(1);
+	Draw_Keyboard(maj_en);
 	xSemaphoreGive(mutex_LCDHandle);
 
 	/* Infinite loop */
 	for(;;)
 	{
+		xSemaphoreTake(mutex_LCDHandle, portMAX_DELAY);
+		BSP_LCD_SetFont(&Font12);
+		BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+		BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+		BSP_LCD_DisplayStringAt(69, 20, Name, LEFT_MODE);
+		xSemaphoreGive(mutex_LCDHandle);
 
-		osDelay(100);
+		BSP_TS_GetState(&TS_State);
+		if(TS_State.touchDetected != prev_state.touchDetected && TS_State.touchDetected < 2 && idx < MAX_c){
+			prev_state.touchDetected = TS_State.touchDetected;
+			switch (state){
+			case 0:
+				Pressed_X = TS_State.touchX[0]/48;
+				Pressed_Y = (TS_State.touchY[0]-132)/28;
+				state = 1;
+				break;
+
+			case 1:
+				if(TS_State.touchX[0]/48 == Pressed_X && (TS_State.touchY[0]-132)/28 == Pressed_Y){
+					state = 0;
+					HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+					if(keyboard[Pressed_Y][Pressed_X] == BACKSPACE){
+						if(idx>0){
+							Name[idx-1] = 0;
+							BSP_LCD_SetTextColor(0xFFEEEEEE);
+							BSP_LCD_FillRect(69+7*(idx-1), 20, 7, 12);
+							idx--;
+						}
+
+					} else if(keyboard[Pressed_Y][Pressed_X] == ENTER){
+						BSP_LCD_SetLayerVisible(1, DISABLE);
+						BSP_LCD_SelectLayer(0);
+						vTaskResume(inputHandle);
+						vTaskDelete(KBHandle);
+
+					}else if(keyboard[Pressed_Y][Pressed_X] == MAJ){
+						maj_en = !maj_en;
+						Draw_Keyboard(maj_en);
+					}else{
+						if(keyboard[Pressed_Y][Pressed_X] >= 'A' && keyboard[Pressed_Y][Pressed_X] <= 'z')Name[idx++] = keyboard[Pressed_Y][Pressed_X]+('A'-'a')*maj_en;
+						else Name[idx++] = keyboard[Pressed_Y][Pressed_X];
+					}
+
+
+				} else if(TS_State.touchY[0] < 132){
+					BSP_LCD_SetLayerVisible(1, DISABLE);
+					BSP_LCD_SelectLayer(0);
+					vTaskResume(inputHandle);
+					vTaskDelete(KBHandle);
+				}else state = 0;
+
+				break;
+
+			default:
+				state = 0;
+				break;
+			}
+		}
+		osDelay(10);
 	}
 	/* USER CODE END KeyboardTask */
 }
@@ -1444,6 +1510,10 @@ void InputTask(void const * argument)
 	uint8_t text[7] = "Name : ";
 	uint16_t len = 7*strlen((char *)text);
 
+	TS_StateTypeDef  prev_state;
+	TS_StateTypeDef TS_State;
+
+	uint8_t state = 0;
 
 	BSP_LCD_SetTextColor(0xFFEEEEEE);
 	BSP_LCD_FillRect(x+len, y, x+Width-len, Height);
@@ -1451,14 +1521,18 @@ void InputTask(void const * argument)
 
 	BSP_LCD_DisplayStringAt(x, y, text, LEFT_MODE);
 
-	TS_StateTypeDef  prev_state;
-	TS_StateTypeDef TS_State;
 
-	uint8_t state = 0;
 
 	/* Infinite loop */
 	for(;;)
 	{
+		xSemaphoreTake(mutex_LCDHandle, portMAX_DELAY);
+		BSP_LCD_SetFont(&Font12);
+		BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+		BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+		BSP_LCD_DisplayStringAt(69, 20, Name, LEFT_MODE);
+		xSemaphoreGive(mutex_LCDHandle);
+
 		BSP_TS_GetState(&TS_State);
 		if(TS_State.touchDetected != prev_state.touchDetected && TS_State.touchDetected < 2){
 			prev_state.touchDetected = TS_State.touchDetected;
@@ -1473,27 +1547,27 @@ void InputTask(void const * argument)
 				case 1:
 					if(TS_State.touchX[0] >= x+len && TS_State.touchX[0] <= x+Width+len &&
 							TS_State.touchY[0] >= y-10 && TS_State.touchY[0] <= y+Height+10){
-						state = 2;
+						state = 0;
 						HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
 						/* definition and creation of KB */
-						osThreadDef(KB, KeyboardTask, osPriorityNormal, 0, 2048);
+						osThreadDef(KB, KeyboardTask, osPriorityAboveNormal, 0, 4096);
 						KBHandle = osThreadCreate(osThread(KB), NULL);
 
 					} else state = 0;
 					break;
 
-				case 2:
-					if(TS_State.touchY[0] < KEYBOARD_Y) state = 3;
-					break;
-
-				case 3:
-					if(TS_State.touchY[0] < KEYBOARD_Y){
-						state = 0;
-						vTaskDelete(KBHandle);
-						BSP_LCD_SetLayerVisible(1, DISABLE);
-						BSP_LCD_SelectLayer(0);
-					}
-					else state = 2;
+//				case 2:
+//					if(TS_State.touchY[0] < KEYBOARD_Y) state = 3;
+//					break;
+//
+//				case 3:
+//					if(TS_State.touchY[0] < KEYBOARD_Y){
+//						state = 0;
+//						vTaskDelete(KBHandle);
+//						BSP_LCD_SetLayerVisible(1, DISABLE);
+//						BSP_LCD_SelectLayer(0);
+//					}
+//					else state = 2;
 
 				default:
 					state = 0;
