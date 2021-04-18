@@ -1291,3 +1291,4 @@ PB1.GPIOParameters=GPIO_Label
 PJ12.Locked=true
 PA7.Signal=ETH_CRS_DV
 PF2.GPIO_Label=FMC_A2 [MT48LC4M32B2B5-6A_A2]
+isbadioc=false

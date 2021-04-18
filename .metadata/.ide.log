@@ -24344,3 +24344,83 @@ java.util.ConcurrentModificationException
 2021-04-18 21:54:15,929 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\fatfs_HalInit.tmp_save
 2021-04-18 21:54:15,969 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\fatfs_HalInit.tmp
 2021-04-18 21:54:15,971 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\fatfs_vars.tmp_save
+2021-04-18 21:54:16,017 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\fatfs_vars.tmp
+2021-04-18 21:54:16,020 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\fatfs_ext_vars.tmp_save
+2021-04-18 21:54:16,063 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\fatfs_ext_vars.tmp
+2021-04-18 21:54:16,065 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\fatfs_inc.tmp_save
+2021-04-18 21:54:16,110 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\fatfs_inc.tmp
+2021-04-18 21:54:16,116 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\ffconf.h_save
+2021-04-18 21:54:16,205 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\ffconf.h
+2021-04-18 21:54:16,213 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\bsp_driver_sd.c_save
+2021-04-18 21:54:16,279 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\bsp_driver_sd.c
+2021-04-18 21:54:16,286 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\bsp_driver_sd.h_save
+2021-04-18 21:54:16,338 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\bsp_driver_sd.h
+2021-04-18 21:54:16,341 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\sd_diskio.h_save
+2021-04-18 21:54:16,388 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\sd_diskio.h
+2021-04-18 21:54:16,395 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\sd_diskio.c_save
+2021-04-18 21:54:16,472 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\sd_diskio.c
+2021-04-18 21:54:16,475 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\App\fatfs.c_save
+2021-04-18 21:54:16,530 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\App\fatfs.c
+2021-04-18 21:54:16,533 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\App\fatfs.h_save
+2021-04-18 21:54:16,582 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\App\fatfs.h
+2021-04-18 21:54:16,585 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\fatfs_platform.c_save
+2021-04-18 21:54:16,669 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\fatfs_platform.c
+2021-04-18 21:54:16,676 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\fatfs_platform.h_save
+2021-04-18 21:54:16,726 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\FATFS\Target\fatfs_platform.h
+2021-04-18 21:54:16,727 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2021-04-18 21:54:16,732 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_HC.tmp_save
+2021-04-18 21:54:16,788 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_HC.tmp
+2021-04-18 21:54:16,790 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_GV.tmp_save
+2021-04-18 21:54:16,831 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_GV.tmp
+2021-04-18 21:54:16,833 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_MSP.tmp_save
+2021-04-18 21:54:16,888 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_MSP.tmp
+2021-04-18 21:54:16,890 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2021-04-18 21:54:16,892 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2021-04-18 21:54:16,893 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2021-04-18 21:54:16,900 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_init.tmp_save
+2021-04-18 21:54:16,952 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_init.tmp
+2021-04-18 21:54:16,954 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_GV.tmp_save
+2021-04-18 21:54:16,996 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_GV.tmp
+2021-04-18 21:54:16,998 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_msp.tmp_save
+2021-04-18 21:54:17,049 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_msp.tmp
+2021-04-18 21:54:17,051 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2021-04-18 21:54:17,053 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2021-04-18 21:54:17,077 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\stm32f7xx_it.c_save
+2021-04-18 21:54:17,152 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\stm32f7xx_it.c
+2021-04-18 21:54:17,157 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\stm32f7xx_it.h_save
+2021-04-18 21:54:17,209 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\stm32f7xx_it.h
+2021-04-18 21:54:17,220 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_init.tmp_save
+2021-04-18 21:54:17,274 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_init.tmp
+2021-04-18 21:54:17,277 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_GV.tmp_save
+2021-04-18 21:54:17,319 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_GV.tmp
+2021-04-18 21:54:17,326 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_msp.tmp_save
+2021-04-18 21:54:17,377 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\sai_msp.tmp
+2021-04-18 21:54:17,391 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_HC.tmp_save
+2021-04-18 21:54:17,445 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_HC.tmp
+2021-04-18 21:54:17,447 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_GV.tmp_save
+2021-04-18 21:54:17,495 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_GV.tmp
+2021-04-18 21:54:17,508 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_MSP.tmp_save
+2021-04-18 21:54:17,561 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\mx_fmc_MSP.tmp
+2021-04-18 21:54:17,576 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\stm32f7xx_hal_msp.c_save
+2021-04-18 21:54:17,704 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\stm32f7xx_hal_msp.c
+2021-04-18 21:54:17,707 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\system.tmp_save
+2021-04-18 21:54:17,747 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\MXTmpFiles\system.tmp
+2021-04-18 21:54:17,754 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\stm32f7xx_hal_timebase_tim.c_save
+2021-04-18 21:54:17,804 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\stm32f7xx_hal_timebase_tim.c
+2021-04-18 21:54:17,815 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\stm32f7xx_hal_conf.h_save
+2021-04-18 21:54:17,879 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\stm32f7xx_hal_conf.h
+2021-04-18 21:54:17,937 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\main.h_save
+2021-04-18 21:54:18,000 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Inc\main.h
+2021-04-18 21:54:18,007 [INFO] CodeEngine:229 - oldGeneratedFile, C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\main.c_save
+2021-04-18 21:54:18,201 [INFO] CodeEngine:247 - Generated code: C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\Core\Src\main.c
+2021-04-18 21:54:18,842 [INFO] ProjectBuilder:2460 - Time for Copy HAL[1] : 121mS.
+2021-04-18 21:54:18,853 [INFO] ProjectBuilder:3418 - Project Generator version: 3.13.0-B3
+2021-04-18 21:54:19,139 [INFO] ConfigFileManager:1242 - The Die is : DIE449
+2021-04-18 21:54:19,144 [INFO] ApiDbMcu:458 - Load IP Config File for LIBJPEG
+2021-04-18 21:54:19,192 [INFO] ApiDbMcu:458 - Load IP Config File for LWIP
+2021-04-18 21:54:19,219 [INFO] ApiDbMcu:458 - Load IP Config File for MBEDTLS
+2021-04-18 21:54:19,243 [INFO] ApiDbMcu:458 - Load IP Config File for USB_DEVICE
+2021-04-18 21:54:19,250 [INFO] ApiDbMcu:458 - Load IP Config File for USB_HOST
+2021-04-18 21:54:20,708 [INFO] ProjectBuilder:3584 - Time for Generating toolchain IDE Files: 1855mS.
+2021-04-18 21:54:20,709 [INFO] ProjectBuilder:2339 - Time for Copy CMSIS : 1mS.
+2021-04-18 21:54:20,714 [INFO] ProjectBuilder:2339 - Time for Copy CMSIS : 0mS.

@@ -109,9 +109,9 @@ SDRAM_HandleTypeDef hsdram1;
 osThreadId defaultTaskHandle;
 osThreadId SDHandle;
 osThreadId AudioHandle;
-osThreadId KBHandle;
 osThreadId inputHandle;
 /* USER CODE BEGIN PV */
+osThreadId KBHandle;
 uint8_t workBuffer[2 * _MAX_SS];
 
 uint32_t  audio_rec_buffer_state;
@@ -302,10 +302,6 @@ int main(void)
   /* definition and creation of Audio */
   osThreadDef(Audio, AudioTask, osPriorityNormal, 0, 2048);
   AudioHandle = osThreadCreate(osThread(Audio), NULL);
-
-  /* definition and creation of KB */
-  osThreadDef(KB, KeyboardTask, osPriorityNormal, 0, 2048);
-  KBHandle = osThreadCreate(osThread(KB), NULL);
 
   /* definition and creation of input */
   osThreadDef(input, InputTask, osPriorityNormal, 0, 1024);
