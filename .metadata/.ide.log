@@ -19438,3 +19438,10 @@ java.util.ConcurrentModificationException
 2021-04-16 17:08:02,365 [WARN] IP:2088 - LayerIdx_L1 not found: check if there is a RefParameter without a condition.
 2021-04-16 17:08:10,056 [WARN] IP:2088 - LayerIdx_L1 not found: check if there is a RefParameter without a condition.
 2021-04-16 19:21:06,153 [WARN] IP:2088 - LayerIdx_L1 not found: check if there is a RefParameter without a condition.
+2021-04-18 16:41:05,524 [INFO] Activator:170 - 
+
+
+2021-04-18 16:41:05,525 [INFO] Activator:171 - !SESSION log4j initialized
+2021-04-18 16:41:06,235 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] Managed Build system manifest file error: Could not load icon "icons/chip.png".
+2021-04-18 16:41:06,238 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] Managed Build system manifest file error: Could not load icon "icons/chip.png".
+2021-04-18 16:41:06,247 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] Managed Build system manifest file error: Could not load icon "icons/chip.png".
