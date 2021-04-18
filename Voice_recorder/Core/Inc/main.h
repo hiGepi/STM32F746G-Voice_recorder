@@ -348,8 +348,8 @@ void Error_Handler(void);
 #define FMC_D11_GPIO_Port GPIOE
 #define ULPI_D3_Pin GPIO_PIN_10
 #define ULPI_D3_GPIO_Port GPIOB
-#define ARDUINO_PWM_D6_Pin GPIO_PIN_6
-#define ARDUINO_PWM_D6_GPIO_Port GPIOH
+#define LED2_Pin GPIO_PIN_6
+#define LED2_GPIO_Port GPIOH
 #define LCD_SDA_Pin GPIO_PIN_8
 #define LCD_SDA_GPIO_Port GPIOH
 #define DCMI_D1_Pin GPIO_PIN_10

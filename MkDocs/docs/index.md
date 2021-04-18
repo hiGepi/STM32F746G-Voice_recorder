@@ -7,12 +7,12 @@ Paricipant à un TER sur de la reconnaissance vocale, la génération d'un modè
 Voici donc la nouvelle carte.
 
 <center><img src="img/intro/Carte.png" alt="Carte de développement" width="500"/></center>
-*Carte STM32F746G-Discovery et son extension*
+<center>*Carte STM32F746G-Discovery et son extension*</center>
 
 Ainsi que le schéma synoptique expliquant le fonctionnement du projet.
 
 <img src="img/intro/Synoptique.png" alt="Synoptique"/>
-*Schéma synoptique*
+<center>*Schéma synoptique*</center>
 
 ## Besoins du projet
 

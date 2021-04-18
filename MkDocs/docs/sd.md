@@ -12,7 +12,7 @@ L'interface SDMMC permet la communication avec des MultiMediaCards (MMC), Secure
 Parmi 3 interfaces possibles (SPI, SDIO,SDMMC) pour communiquer avec la carte SD l'interface SDMMC est la plus rapide, flexible mais plus complexe et possédant plus d'E/S.
 
 <center>![Diagramme SDMMC](img/sd/sdmmc_diagram.PNG)</center>
-*Diagramme SDMMC*
+<center>*Diagramme SDMMC*</center>
 
 [Lien présentation SDMMC](https://www.st.com/content/ccc/resource/training/technical/product_training/group0/a7/61/d8/cf/a0/c8/4d/08/STM32F7_Peripheral_SDMMC/files/STM32F7_Peripheral_SDMMC.pdf/_jcr_content/translations/en.STM32F7_Peripheral_SDMMC.pdf)
 

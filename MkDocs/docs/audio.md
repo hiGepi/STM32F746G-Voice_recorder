@@ -7,17 +7,19 @@ La communication avec le codec se fera à l'aide de l'interface SAI.
 
 ### Codec WM8994
 
-Le codec WM8994 est un dispositif matériel permettant de mettre en oeuvre l'encode ou le décodage d'un flux de données numérique, en vue d'une transmission ou d'un stockage.
+Un Codec est un dispositif matériel permettant de mettre en oeuvre l'encode ou le décodage d'un flux de données numérique, en vue d'une transmission ou d'un stockage.
 
 ![Codec WM8994](img/audio/codec8994.PNG)
-*I/O Codec WM8994*
+<center>*I/O Codec WM8994*</center>
+
+Celui-ci présente 
 
 [Lien doc WM8994](https://www.mouser.com/datasheet/2/76/WM8994_ProductBrief_2-217999.pdf)
 
 ### SAI
 
 ![Diagramme SAI](img/audio/sai_diagram.png)
-*Diagramme SAI*
+<center>*Diagramme SAI*</center>
 
 [Lien doc SAI](https://www.st.com/resource/en/user_manual/dm00189702-description-of-stm32f7-hal-and-lowlayer-drivers-stmicroelectronics.pdf#page=861)
 

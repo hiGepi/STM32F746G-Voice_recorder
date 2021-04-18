@@ -1,20 +1,10 @@
-01:52:48 **** Incremental Build of configuration Debug for project Voice_recorder ****
+21:49:30 **** Incremental Build of configuration Debug for project Voice_recorder ****
 make -j24 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F746xx -DDEBUG -c -I../FATFS/App -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Drivers/CMSIS/Include -I../Drivers/CMSIS/Device/ST/STM32F7xx/Include -I../Core/Inc -I../Drivers/STM32F7xx_HAL_Driver/Inc -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 -I../FATFS/Target -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy -I../Middlewares/Third_Party/FatFs/src -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "Voice_recorder.elf" @"objects.list"   -mcpu=cortex-m7 -T"C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Voice_recorder.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: Voice_recorder.elf
- 
-arm-none-eabi-objdump -h -S  Voice_recorder.elf  > "Voice_recorder.list"
-arm-none-eabi-objcopy  -O binary  Voice_recorder.elf  "Voice_recorder.bin"
 arm-none-eabi-size   Voice_recorder.elf 
    text	   data	    bss	    dec	    hex	filename
- 103620	    140	  40876	 144636	  234fc	Voice_recorder.elf
+  73696	    136	  74464	 148296	  24348	Voice_recorder.elf
 Finished building: default.size.stdout
  
-Finished building: Voice_recorder.bin
- 
-Finished building: Voice_recorder.list
- 
 
-01:52:49 Build Finished. 0 errors, 0 warnings. (took 1s.301ms)
+21:49:30 Build Finished. 0 errors, 0 warnings. (took 293ms)
 

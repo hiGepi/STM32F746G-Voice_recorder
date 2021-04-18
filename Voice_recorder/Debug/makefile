@@ -43,34 +43,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := STM32_FS_SD_Audio
+BUILD_ARTIFACT_NAME := Voice_recorder
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX := 
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME).$(BUILD_ARTIFACT_EXTENSION)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-STM32_FS_SD_Audio.elf \
+Voice_recorder.elf \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-STM32_FS_SD_Audio.list \
+Voice_recorder.list \
 
 OBJCOPY_BIN += \
-STM32_FS_SD_Audio.bin \
+Voice_recorder.bin \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: STM32_FS_SD_Audio.elf secondary-outputs
+main-build: Voice_recorder.elf secondary-outputs
 
 # Tool invocations
-STM32_FS_SD_Audio.elf: $(OBJS) $(USER_OBJS) C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\STM32_FS_SD_Audio\STM32F746NGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "STM32_FS_SD_Audio.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\STM32_FS_SD_Audio\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM32_FS_SD_Audio.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Voice_recorder.elf: $(OBJS) $(USER_OBJS) C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\STM32F746NGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Voice_recorder.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\Sasa\Desktop\M1_E3A\TER\STM32F746G-Voice_recorder\Voice_recorder\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Voice_recorder.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -79,13 +79,13 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-STM32_FS_SD_Audio.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "STM32_FS_SD_Audio.list"
+Voice_recorder.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Voice_recorder.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-STM32_FS_SD_Audio.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "STM32_FS_SD_Audio.bin"
+Voice_recorder.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Voice_recorder.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
