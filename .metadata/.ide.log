@@ -19437,3 +19437,4 @@ java.util.ConcurrentModificationException
 2021-04-16 17:08:01,612 [INFO] NvicIntPanel:90 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,702x336,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
 2021-04-16 17:08:02,365 [WARN] IP:2088 - LayerIdx_L1 not found: check if there is a RefParameter without a condition.
 2021-04-16 17:08:10,056 [WARN] IP:2088 - LayerIdx_L1 not found: check if there is a RefParameter without a condition.
+2021-04-16 19:21:06,153 [WARN] IP:2088 - LayerIdx_L1 not found: check if there is a RefParameter without a condition.

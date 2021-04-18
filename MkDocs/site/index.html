@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="None">
+  
+  
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <title>Audio recorder</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Projet";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="js/jquery-2.1.1.min.js" defer></script>
+  <script src="js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> Audio recorder</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href=".">Projet</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#besoins-du-projet">Besoins du projet</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#problematiques">Problématiques</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#fichier-wav">Fichier .wav</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="sd/">Carte SD</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="audio/">Audio</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="app/">Application</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="files/">Fichiers</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">Audio recorder</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Projet</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/hiGepi/STM32F746G-Voice_recorder/edit/master/docs/index.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="bienvenue-sur-le-projet-denregistreur-vocal">Bienvenue sur le projet d'enregistreur vocal !</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Paricipant à un TER sur de la reconnaissance vocale, la génération d'un modèle de reconnaissance vocale nécessite d'avoir un dictionnaire de mot et des enregistrements audio associés. Ce dictionnaire contient nottament des nom de cellules qui ne se trouvent pas dans les bases de données open-source. Ainsi, nous avons créé un script Matlab permettant d'enregistrer la voix de volontaires. Afin de permettre d'enregistrer un plus grand nombre de données, j'ai décidé de porter ce script sous forme d'application sur la carte STM32F746G.</p>
+<p>Voici donc la nouvelle carte.</p>
+<p><img src="img/intro/Carte.png" alt="Carte de développement"/>
+<em>Carte STM32F746G-Discovery et son extension</em></p>
+<p>Ainsi que le schéma synoptique expliquant le fonctionnement du projet.</p>
+<p><img src="img/intro/Synoptique.png" alt="Synoptique"/>
+<em>Schéma synoptique</em></p>
+<h2 id="besoins-du-projet">Besoins du projet</h2>
+<p>Nous avons besoin de receuillir des fichiers audio pour une liste de mot appelée dictionnaire. Pour ce faire, la carte dispose d'un Codec audio permettant de faire l'acquisition de la voix par l'interface de deux microphones sur la carte. Le but étant de pouvoir récupérer ces acquisitions pour les donner à un réseau de neuronnes conçu pour générer un modèle de reconnaissance vocale, il faut les enregistrer sur un espace de stockage amovible. </p>
+<p>Bingo ! il y a un slot pour carte micro-SD. </p>
+<h2 id="problematiques">Problématiques</h2>
+<h3 id="fichier-wav">Fichier .wav</h3>
+<p>Afin d'enregistrer des fichiers audio, il faut pouvoir les stocker sous format .wav sur la carte. Il faut pour cela, écrire une entête dans les fichiers permettant de reconnaître le type :</p>
+<pre><code class="language-txt">[Bloc de déclaration d'un fichier au format WAVE]
+   FileTypeBlocID  (4 octets) : Constante « RIFF »  (0x52,0x49,0x46,0x46)
+   FileSize        (4 octets) : Taille du fichier moins 8 octets
+   FileFormatID    (4 octets) : Format = « WAVE »  (0x57,0x41,0x56,0x45)
+
+[Bloc décrivant le format audio]
+   FormatBlocID    (4 octets) : Identifiant « fmt␣ »  (0x66,0x6D, 0x74,0x20)
+   BlocSize        (4 octets) : Nombre d'octets du bloc - 16  (0x10)
+
+   AudioFormat     (2 octets) : Format du stockage dans le fichier (1: PCM entier, 3: PCM flottant, 65534: WAVE_FORMAT_EXTENSIBLE)
+   NbrCanaux       (2 octets) : Nombre de canaux (de 1 à 6, cf. ci-dessous)
+   Frequence       (4 octets) : Fréquence d'échantillonnage (en hertz) [Valeurs standardisées : 11 025, 22 050, 44 100 et éventuellement 48 000 et 96 000]
+   BytePerSec      (4 octets) : Nombre d'octets à lire par seconde (c.-à-d., Frequence * BytePerBloc).
+   BytePerBloc     (2 octets) : Nombre d'octets par bloc d'échantillonnage (c.-à-d., tous canaux confondus : NbrCanaux * BitsPerSample/8).
+   BitsPerSample   (2 octets) : Nombre de bits utilisés pour le codage de chaque échantillon (8, 16, 24)
+
+[Bloc des données]
+   DataBlocID      (4 octets) : Constante « data »  (0x64,0x61,0x74,0x61)
+   DataSize        (4 octets) : Nombre d'octets des données (c.-à-d. &quot;Data[]&quot;, c.-à-d. taille_du_fichier - taille_de_l'entête  (qui fait 44 octets normalement).
+   DATAS[] : [Octets du  Sample 1 du Canal 1] [Octets du Sample 1 du Canal 2] [Octets du Sample 2 du Canal 1] [Octets du Sample 2 du Canal 2]
+
+    * Les Canaux :
+        1 pour mono,
+        2 pour stéréo
+
+NOTES IMPORTANTES :  Les octets des mots sont stockés sous la forme Petit-boutiste (c.-à-d., en &quot;little endian&quot;)
+[87654321][16..9][24..17] [8..1][16..9][24..17] [...
+</code></pre>
+<p>On remarque la nécessité de connaître la taille de l'échantillon à sauvegarder. La durée d'enregistrement de chaque mots n'excédent pas 4 secondes, soit pour une fréquence d'échantillonnage de 16 kHz, une taille de 64 Ko en mono. La taille de la RAM dont dispose la carte STM32 est de 340 Ko, il n'y aura a priori pas de problème majeur pour stocker chaque échantillon sur la carte entre deux écritures sur la carte SD. Pour des enregistrements plus conséquents, on pourra toujours utiliser la SDRAM pouvant stocker jusqu'à 64 Mo.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sd/" class="btn btn-neutral float-right" title="Carte SD">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/hiGepi/STM32F746G-Voice_recorder/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+      
+        <span style="margin-left: 15px"><a href="sd/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '.';</script>
+    <script src="js/theme.js" defer></script>
+      <script src="search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.1.2
+Build Date UTC : 2021-04-16 17:43:25.830733+00:00
+-->
