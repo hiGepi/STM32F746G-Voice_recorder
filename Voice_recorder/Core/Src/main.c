@@ -39,24 +39,16 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-typedef enum
-{
-	BUFFER_OFFSET_NONE = 0,
-	BUFFER_OFFSET_HALF = 1,
-	BUFFER_OFFSET_FULL = 2,
-}BUFFER_StateTypeDef;
 
 #define ARBG8888_BYTE_PER_PIXEL   4
 
-/**
- * @brief  SDRAM Write read buffer start address after CAM Frame buffer
- * Assuming Camera frame buffer is of size 640x480 and format RGB565 (16 bits per pixel).
- */
+// SDRAM
 #define SDRAM_WRITE_READ_ADDR        ((uint32_t)(LCD_FB_START_ADDRESS + (RK043FN48H_WIDTH * RK043FN48H_HEIGHT * ARBG8888_BYTE_PER_PIXEL)))
 
 #define SDRAM_WRITE_READ_ADDR_OFFSET ((uint32_t)0x0800)
 #define SRAM_WRITE_READ_ADDR_OFFSET  SDRAM_WRITE_READ_ADDR_OFFSET
 
+// Audio
 #define AUDIO_REC_START_ADDR         SDRAM_WRITE_READ_ADDR
 
 #define AUDIO_BLOCK_SIZE   	((uint32_t)512)
@@ -65,6 +57,29 @@ typedef enum
 #define AUDIO_BUFFER_R   	(AUDIO_REC_START_ADDR + (AUDIO_BLOCK_SIZE*4))
 #define AUDIO_BUFFER_L   	(AUDIO_REC_START_ADDR + (AUDIO_BLOCK_SIZE*5))
 #define AUDIO_POST  		(AUDIO_REC_START_ADDR + (AUDIO_BLOCK_SIZE*6))
+
+// WAV File
+#define Audio_freq 			AUDIO_FREQUENCY_16K
+#define Audio_bit_res 		DEFAULT_AUDIO_IN_BIT_RESOLUTION
+#define Audio_chan 			DEFAULT_AUDIO_IN_CHANNEL_NBR 	// A changer en mono
+#define BytePerBloc			Audio_bit_res*Audio_chan/8
+#define BytePerSec			BytePerBloc*Audio_freq
+
+#define MASK_32_TO_8_0		0x000000FF
+#define MASK_32_TO_8_1		0x0000FF00
+#define MASK_32_TO_8_2		0x00FF0000
+#define MASK_32_TO_8_3		0xFF000000
+
+// Keyboard
+#define MAJ					20
+#define SPACE				32
+#define BACKSPACE			8
+#define ENTER				10
+
+#define KEYBOARD_X 			0
+#define KEYBOARD_Y			132
+
+#define MAX_c 				30
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -75,6 +90,9 @@ typedef enum
 /* Private variables ---------------------------------------------------------*/
 
 DMA2D_HandleTypeDef hdma2d;
+
+I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c3;
 
 LTDC_HandleTypeDef hltdc;
 
@@ -94,10 +112,30 @@ SDRAM_HandleTypeDef hsdram1;
 osThreadId defaultTaskHandle;
 osThreadId SDHandle;
 osThreadId AudioHandle;
+osThreadId inputHandle;
+osMutexId mutex_LCDHandle;
 /* USER CODE BEGIN PV */
+osThreadId KBHandle;
 uint8_t workBuffer[2 * _MAX_SS];
 
 uint32_t  audio_rec_buffer_state;
+
+typedef enum
+{
+	BUFFER_OFFSET_NONE = 0,
+	BUFFER_OFFSET_HALF = 1,
+	BUFFER_OFFSET_FULL = 2,
+}BUFFER_StateTypeDef;
+
+
+uint8_t Name[MAX_c] = "";
+uint8_t keyboard[5][10] =	{
+							{'1','2','3','4','5','6','7','8','9','0'},
+							{'a','z','e','r','t','y','u','i','o','p'},
+							{'q','s','d','f','g','h','j','k','l','m'},
+							{MAJ,MAJ,'w','x','c','v','b','n',BACKSPACE,BACKSPACE},
+							{0,0,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,ENTER,ENTER}
+							};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,11 +148,18 @@ static void MX_LTDC_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_SAI2_Init(void);
+static void MX_I2C1_Init(void);
+static void MX_I2C3_Init(void);
 void StartDefaultTask(void const * argument);
 void SDTask(void const * argument);
 void AudioTask(void const * argument);
+void InputTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
+void write_header(uint32_t N_Bytes_Data);
+void Draw_Keyboard(uint8_t MAJ_ENABLE);
+void KeyboardTask(void const * argument);
+
 void RL_sep(uint16_t* buffer, uint16_t size){
 	uint16_t j=0,k=0;
 	for(size_t i=0;i<size;i++){
@@ -210,12 +255,16 @@ int main(void)
   MX_USART1_UART_Init();
   MX_DMA2D_Init();
   MX_SAI2_Init();
+  MX_I2C1_Init();
+  MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
   BSP_LCD_Init();
   BSP_LCD_LayerDefaultInit(0, LCD_FB_START_ADDRESS);
   BSP_LCD_LayerDefaultInit(1, LCD_FB_START_ADDRESS+ BSP_LCD_GetXSize()*BSP_LCD_GetYSize()*4);
   BSP_LCD_DisplayOn();
-  BSP_LCD_SelectLayer(1);
+  BSP_LCD_SelectLayer(0);
+  BSP_LCD_SetLayerVisible(0, ENABLE);
+  BSP_LCD_SetLayerVisible(1, DISABLE);
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_SetFont(&Font12);
   BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
@@ -228,9 +277,14 @@ int main(void)
 	  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() - 95, (uint8_t *)"ERROR", CENTER_MODE);
 	  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() - 80, (uint8_t *)"Touchscreen cannot be initialized", CENTER_MODE);
   } else {
-	  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() - 150, (uint8_t *)"Realise avec amour", CENTER_MODE);
+	  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() - 150, (uint8_t *)"TS initialized", CENTER_MODE);
   }
   /* USER CODE END 2 */
+
+  /* Create the mutex(es) */
+  /* definition and creation of mutex_LCD */
+  osMutexDef(mutex_LCD);
+  mutex_LCDHandle = osMutexCreate(osMutex(mutex_LCD));
 
   /* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
@@ -250,16 +304,20 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityIdle, 0, 128);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* definition and creation of SD */
-  osThreadDef(SD, SDTask, osPriorityAboveNormal, 0, 4096);
+  osThreadDef(SD, SDTask, osPriorityNormal, 0, 4096);
   SDHandle = osThreadCreate(osThread(SD), NULL);
 
   /* definition and creation of Audio */
   osThreadDef(Audio, AudioTask, osPriorityNormal, 0, 2048);
   AudioHandle = osThreadCreate(osThread(Audio), NULL);
+
+  /* definition and creation of input */
+  osThreadDef(input, InputTask, osPriorityNormal, 0, 1024);
+  inputHandle = osThreadCreate(osThread(input), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
@@ -332,7 +390,8 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC|RCC_PERIPHCLK_USART1
-                              |RCC_PERIPHCLK_SAI2|RCC_PERIPHCLK_SDMMC1
+                              |RCC_PERIPHCLK_SAI2|RCC_PERIPHCLK_I2C1
+                              |RCC_PERIPHCLK_I2C3|RCC_PERIPHCLK_SDMMC1
                               |RCC_PERIPHCLK_CLK48;
   PeriphClkInitStruct.PLLSAI.PLLSAIN = 384;
   PeriphClkInitStruct.PLLSAI.PLLSAIR = 5;
@@ -342,6 +401,8 @@ void SystemClock_Config(void)
   PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_8;
   PeriphClkInitStruct.Sai2ClockSelection = RCC_SAI2CLKSOURCE_PLLSAI;
   PeriphClkInitStruct.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
+  PeriphClkInitStruct.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
+  PeriphClkInitStruct.I2c3ClockSelection = RCC_I2C3CLKSOURCE_PCLK1;
   PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48SOURCE_PLLSAIP;
   PeriphClkInitStruct.Sdmmc1ClockSelection = RCC_SDMMC1CLKSOURCE_CLK48;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
@@ -388,6 +449,98 @@ static void MX_DMA2D_Init(void)
 }
 
 /**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.Timing = 0x00C0EAFF;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief I2C3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C3_Init(void)
+{
+
+  /* USER CODE BEGIN I2C3_Init 0 */
+
+  /* USER CODE END I2C3_Init 0 */
+
+  /* USER CODE BEGIN I2C3_Init 1 */
+
+  /* USER CODE END I2C3_Init 1 */
+  hi2c3.Instance = I2C3;
+  hi2c3.Init.Timing = 0x00C0EAFF;
+  hi2c3.Init.OwnAddress1 = 0;
+  hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c3.Init.OwnAddress2 = 0;
+  hi2c3.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c3.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c3.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c3, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c3, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C3_Init 2 */
+
+  /* USER CODE END I2C3_Init 2 */
+
+}
+
+/**
   * @brief LTDC Initialization Function
   * @param None
   * @retval None
@@ -400,6 +553,7 @@ static void MX_LTDC_Init(void)
   /* USER CODE END LTDC_Init 0 */
 
   LTDC_LayerCfgTypeDef pLayerCfg = {0};
+  LTDC_LayerCfgTypeDef pLayerCfg1 = {0};
 
   /* USER CODE BEGIN LTDC_Init 1 */
 
@@ -436,10 +590,29 @@ static void MX_LTDC_Init(void)
   pLayerCfg.FBStartAdress = 0xC0000000;
   pLayerCfg.ImageWidth = 480;
   pLayerCfg.ImageHeight = 272;
-  pLayerCfg.Backcolor.Blue = 0;
-  pLayerCfg.Backcolor.Green = 0;
-  pLayerCfg.Backcolor.Red = 0;
+  pLayerCfg.Backcolor.Blue = 255;
+  pLayerCfg.Backcolor.Green = 255;
+  pLayerCfg.Backcolor.Red = 255;
   if (HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  pLayerCfg1.WindowX0 = 0;
+  pLayerCfg1.WindowX1 = 480;
+  pLayerCfg1.WindowY0 = 132;
+  pLayerCfg1.WindowY1 = 272;
+  pLayerCfg1.PixelFormat = LTDC_PIXEL_FORMAT_RGB565;
+  pLayerCfg1.Alpha = 255;
+  pLayerCfg1.Alpha0 = 0;
+  pLayerCfg1.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
+  pLayerCfg1.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
+  pLayerCfg1.FBStartAdress = 0xC001FE00;
+  pLayerCfg1.ImageWidth = 480;
+  pLayerCfg1.ImageHeight = 140;
+  pLayerCfg1.Backcolor.Blue = 0;
+  pLayerCfg1.Backcolor.Green = 0;
+  pLayerCfg1.Backcolor.Red = 0;
+  if (HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg1, 1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -691,7 +864,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(LCD_BL_CTRL_GPIO_Port, LCD_BL_CTRL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(DCMI_PWR_EN_GPIO_Port, DCMI_PWR_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOH, DCMI_PWR_EN_Pin|LED2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOG, ARDUINO_D4_Pin|ARDUINO_D2_Pin|EXT_RST_Pin, GPIO_PIN_RESET);
@@ -717,14 +890,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : ARDUINO_SCL_D15_Pin ARDUINO_SDA_D14_Pin */
-  GPIO_InitStruct.Pin = ARDUINO_SCL_D15_Pin|ARDUINO_SDA_D14_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : ULPI_D7_Pin ULPI_D6_Pin ULPI_D5_Pin ULPI_D3_Pin
                            ULPI_D2_Pin ULPI_D1_Pin ULPI_D4_Pin */
@@ -859,12 +1024,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
   HAL_GPIO_Init(ARDUINO_SCK_D13_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : DCMI_PWR_EN_Pin */
-  GPIO_InitStruct.Pin = DCMI_PWR_EN_Pin;
+  /*Configure GPIO pins : DCMI_PWR_EN_Pin LED2_Pin */
+  GPIO_InitStruct.Pin = DCMI_PWR_EN_Pin|LED2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(DCMI_PWR_EN_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 
   /*Configure GPIO pins : DCMI_D4_Pin DCMI_D3_Pin DCMI_D0_Pin DCMI_D2_Pin
                            DCMI_D1_Pin */
@@ -989,14 +1154,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF13_DCMI;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LCD_SCL_Pin LCD_SDA_Pin */
-  GPIO_InitStruct.Pin = LCD_SCL_Pin|LCD_SDA_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = GPIO_AF4_I2C3;
-  HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
-
   /*Configure GPIO pins : ULPI_CLK_Pin ULPI_D0_Pin */
   GPIO_InitStruct.Pin = ULPI_CLK_Pin|ULPI_D0_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -1004,14 +1161,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   GPIO_InitStruct.Alternate = GPIO_AF10_OTG_HS;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : ARDUINO_PWM_D6_Pin */
-  GPIO_InitStruct.Pin = ARDUINO_PWM_D6_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF9_TIM12;
-  HAL_GPIO_Init(ARDUINO_PWM_D6_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : ARDUINO_MISO_D12_Pin ARDUINO_MOSI_PWM_D11_Pin */
   GPIO_InitStruct.Pin = ARDUINO_MISO_D12_Pin|ARDUINO_MOSI_PWM_D11_Pin;
@@ -1035,6 +1184,130 @@ void BSP_AUDIO_IN_HalfTransfer_CallBack(void)
 	audio_rec_buffer_state = BUFFER_OFFSET_HALF;
 	return;
 }
+
+void write_header(uint32_t N_Bytes_Data){
+	uint32_t byteswritten;
+	uint8_t entete[] = { 0x52, 0x49, 0x46,
+			0x46, //'RIFF' : identification du format
+			(uint8_t) ((N_Bytes_Data+36) & MASK_32_TO_8_0),
+			(uint8_t) (((N_Bytes_Data+36) & MASK_32_TO_8_1)>>8),
+			(uint8_t) (((N_Bytes_Data+36) & MASK_32_TO_8_2)>>16),
+			(uint8_t) (((N_Bytes_Data+36) & MASK_32_TO_8_3)>>24), //Taille du fichier - 8 octets (en octets)
+
+			0x57, 0x41, 0x56,
+			0x45, //'WAVE'
+			0x66, 0x6D, 0x74,
+			0x20, //'fmt ' identifiant le format WAV
+			0x10, 0x00, 0x00,
+			0x00, //Nombre d'octets utilisés pour définir le format (16)
+			0x01,
+			0x00, //Pas de compression, format PCM entier
+			Audio_chan,
+			0x00, //Nombre de cannaux
+			(uint8_t) (Audio_freq & MASK_32_TO_8_0),
+			(uint8_t) ((Audio_freq & MASK_32_TO_8_1)>>8),
+			(uint8_t) ((Audio_freq & MASK_32_TO_8_2)>>16),
+			(uint8_t) ((Audio_freq & MASK_32_TO_8_3)>>24), //Fréquence d'échantillonnage
+
+			(uint8_t) (BytePerSec & MASK_32_TO_8_0),
+			(uint8_t) ((BytePerSec & MASK_32_TO_8_1)>>8),
+			(uint8_t) ((BytePerSec & MASK_32_TO_8_2)>>16),
+			(uint8_t) ((BytePerSec & MASK_32_TO_8_3)>>24), //Nombre d'octets par seconde
+
+			(BytePerBloc & MASK_32_TO_8_0), ((BytePerBloc & MASK_32_TO_8_1)<<8), //BytePerBloc
+
+			(Audio_bit_res), 0x00, //Bits par échantillons (ici 16 par défaut)
+			0x64, 0x61, 0x74, 0x61, //'DATA'
+			//(DataSize & MASK_32_TO_8_0), (DataSize & MASK_32_TO_8_1), (DataSize& MASK_32_TO_8_2), (DataSize & MASK_32_TO_8_3)
+			(uint8_t) ((N_Bytes_Data) & MASK_32_TO_8_0),
+			(uint8_t) (((N_Bytes_Data) & MASK_32_TO_8_1)>>8),
+			(uint8_t) (((N_Bytes_Data) & MASK_32_TO_8_2)>>16),
+			(uint8_t) (((N_Bytes_Data) & MASK_32_TO_8_3)>>24),//DataSize
+	};
+	f_write(&SDFile, entete, 44, (void*) &byteswritten);
+}
+
+void Draw_Keyboard(uint8_t MAJ_ENABLE){
+	uint16_t y = 132;
+
+	BSP_LCD_SetFont(&Font16);
+	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+	BSP_LCD_FillRect(0, 132, 480, 140);
+
+	BSP_LCD_SetTextColor(LCD_COLOR_GRAY);
+	for(uint8_t i=0; i<5; i++){
+		for(uint8_t j=0; j<10; j++){
+			if(i<3)BSP_LCD_FillRect(j*48+2, y+i*28+2, 44, 24);
+			else if(i==3){
+				if(j == 0){
+					if(MAJ_ENABLE)BSP_LCD_SetTextColor(LCD_COLOR_LIGHTGRAY);
+					BSP_LCD_FillRect(j*48+2, y+i*28+2, 80, 24);
+					if(MAJ_ENABLE)BSP_LCD_SetTextColor(LCD_COLOR_GRAY);
+				}
+				if(j == 8){
+					BSP_LCD_FillRect(j*48+34, y+i*28+2, 60, 24);
+				}
+				else if(j >= 2 && j <= 7)BSP_LCD_FillRect(j*48+2, y+i*28+2, 44, 24);
+			} else {
+				if(j == 8){
+					BSP_LCD_FillRect(j*48+14, y+i*28+2, 80, 24);
+				}
+				if(j == 2)BSP_LCD_FillRect(j*48+2+30, y+i*28+2, 44+48*5-60, 24);
+			}
+		}
+	}
+
+	BSP_LCD_SetBackColor(LCD_COLOR_GRAY);
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+	for(uint8_t i=0; i<5; i++){
+		for(uint8_t j=0; j<10; j++){
+			if(keyboard[i][j] >= '0' && keyboard[i][j] <= '9')BSP_LCD_DisplayChar(j*48+2+16, y+i*28+2+4, keyboard[i][j]);
+			if(keyboard[i][j] >= 'a' && keyboard[i][j] <= 'z')BSP_LCD_DisplayChar(j*48+2+16, y+i*28+2+4, keyboard[i][j]+('A'-'a')*MAJ_ENABLE);
+			if(i == 3 && j == 8){
+				BSP_LCD_DisplayStringAt(j*48+34+15, y+i*28+6, (uint8_t *)"DEL", LEFT_MODE);
+			}
+			if(i == 4 && j == 8){
+				BSP_LCD_DisplayStringAt(j*48+44, y+i*28+6, (uint8_t *)"OK", LEFT_MODE);
+			}
+			if(i == 3 && j == 0){
+				if(MAJ_ENABLE)BSP_LCD_SetBackColor(LCD_COLOR_LIGHTGRAY);
+				BSP_LCD_DisplayStringAt(j*48+2+26, y+i*28+6, (uint8_t *)"MAJ", LEFT_MODE);
+				if(MAJ_ENABLE)BSP_LCD_SetBackColor(LCD_COLOR_GRAY);
+			}
+			if(i == 4 && j == 2){
+				BSP_LCD_DisplayStringAt(230, y+i*28+2, (uint8_t *)"__", LEFT_MODE);
+			}
+		}
+	}
+}
+/* USER CODE BEGIN Header_KeyboardTask */
+/**
+* @brief Function implementing the KB thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_KeyboardTask */
+void KeyboardTask(void const * argument)
+{
+	/* USER CODE BEGIN KeyboardTask */
+	BSP_LCD_SetLayerVisible(1, ENABLE);
+	BSP_LCD_SelectLayer(1);
+	BSP_LCD_Clear(0);
+
+	xSemaphoreTake(mutex_LCDHandle, portMAX_DELAY);
+	Draw_Keyboard(1);
+	xSemaphoreGive(mutex_LCDHandle);
+
+	/* Infinite loop */
+	for(;;)
+	{
+
+		osDelay(100);
+	}
+	/* USER CODE END KeyboardTask */
+}
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -1065,43 +1338,43 @@ void StartDefaultTask(void const * argument)
 void SDTask(void const * argument)
 {
   /* USER CODE BEGIN SDTask */
-	FRESULT res; /* FatFs function common result code */
-	uint32_t byteswritten; /* File write/read counts */
-	uint8_t wtext[] = "La version v1.16.1 ne devrait plus poser de soucis :)"; /* File write buffer */
-	uint8_t rtext[_MAX_SS];/* File read buffer */
-	if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0) != FR_OK)
-	{
-		Error_Handler();
-	}
-	else
-	{
-		if(f_mkfs((TCHAR const*)SDPath, FM_ANY, 0, rtext, sizeof(rtext)) != FR_OK)
-		{
-			Error_Handler();
-		}
-		else
-		{
-			//Open file for writing (Create)
-			if(f_open(&SDFile, "EEA.TXT", FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
-			{
-				Error_Handler();
-			}
-			else
-			{
-				//Write to the text file
-				res = f_write(&SDFile, wtext, strlen((char *)wtext), (void *)&byteswritten);
-				if((byteswritten == 0) || (res != FR_OK))
-				{
-					Error_Handler();
-				}
-				else
-				{
-					f_close(&SDFile);
-				}
-			}
-		}
-	}
-	f_mount(&SDFatFS, (TCHAR const*)NULL, 0);
+//	FRESULT res; /* FatFs function common result code */
+//	uint32_t byteswritten; /* File write/read counts */
+//	uint8_t wtext[] = "La version v1.16.1 ne devrait plus poser de soucis :)"; /* File write buffer */
+//	uint8_t rtext[_MAX_SS];/* File read buffer */
+//	if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0) != FR_OK)
+//	{
+//		Error_Handler();
+//	}
+//	else
+//	{
+//		if(f_mkfs((TCHAR const*)SDPath, FM_ANY, 0, rtext, sizeof(rtext)) != FR_OK)
+//		{
+//			Error_Handler();
+//		}
+//		else
+//		{
+//			//Open file for writing (Create)
+//			if(f_open(&SDFile, "EEA.TXT", FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
+//			{
+//				Error_Handler();
+//			}
+//			else
+//			{
+//				//Write to the text file
+//				res = f_write(&SDFile, wtext, strlen((char *)wtext), (void *)&byteswritten);
+//				if((byteswritten == 0) || (res != FR_OK))
+//				{
+//					Error_Handler();
+//				}
+//				else
+//				{
+//					f_close(&SDFile);
+//				}
+//			}
+//		}
+//	}
+//	f_mount(&SDFatFS, (TCHAR const*)NULL, 0);
 	/* Infinite loop */
 	for(;;)
 	{
@@ -1128,24 +1401,108 @@ void AudioTask(void const * argument)
 	}
 
 	/* Initialize SDRAM buffers */
-	memset((uint16_t*)AUDIO_BUFFER_IN, 0, AUDIO_BLOCK_SIZE*2);
-	memset((uint16_t*)AUDIO_BUFFER_OUT, 0, AUDIO_BLOCK_SIZE*2);
-	audio_rec_buffer_state = BUFFER_OFFSET_NONE;
-
-	/* Start Recording */
-	BSP_AUDIO_IN_Record((uint16_t*)AUDIO_BUFFER_IN, AUDIO_BLOCK_SIZE);
-	BSP_AUDIO_IN_SetVolume(90);
-	/* Start Playback */
-	BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
-	BSP_AUDIO_OUT_Play((uint16_t*)AUDIO_BUFFER_OUT, AUDIO_BLOCK_SIZE*2);
+//	memset((uint16_t*)AUDIO_BUFFER_IN, 0, AUDIO_BLOCK_SIZE*2);
+//	memset((uint16_t*)AUDIO_BUFFER_OUT, 0, AUDIO_BLOCK_SIZE*2);
+//	audio_rec_buffer_state = BUFFER_OFFSET_NONE;
+//
+//	/* Start Recording */
+//	BSP_AUDIO_IN_Record((uint16_t*)AUDIO_BUFFER_IN, AUDIO_BLOCK_SIZE);
+//	BSP_AUDIO_IN_SetVolume(90);
+//	/* Start Playback */
+//	BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
+//	BSP_AUDIO_OUT_Play((uint16_t*)AUDIO_BUFFER_OUT, AUDIO_BLOCK_SIZE*2);
 	/* Infinite loop */
 	for(;;)
 	{
-		while(audio_rec_buffer_state != BUFFER_OFFSET_HALF);
-		while(audio_rec_buffer_state != BUFFER_OFFSET_FULL);
-		osDelay(1);
+//		while(audio_rec_buffer_state != BUFFER_OFFSET_HALF);
+//		RL_sep((uint16_t*)AUDIO_BUFFER_IN,AUDIO_BLOCK_SIZE);
+//		treatment();
+//		RL_cat2((uint16_t*)AUDIO_BUFFER_OUT,AUDIO_BLOCK_SIZE);
+//		while(audio_rec_buffer_state != BUFFER_OFFSET_FULL);
+//		RL_sep((uint16_t*)(AUDIO_BUFFER_IN+(AUDIO_BLOCK_SIZE)),AUDIO_BLOCK_SIZE);
+//		treatment();
+//		RL_cat2((uint16_t*)(AUDIO_BUFFER_OUT+(AUDIO_BLOCK_SIZE)),AUDIO_BLOCK_SIZE);
+		osDelay(100);
 	}
   /* USER CODE END AudioTask */
+}
+
+/* USER CODE BEGIN Header_InputTask */
+/**
+* @brief Function implementing the input thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_InputTask */
+void InputTask(void const * argument)
+{
+  /* USER CODE BEGIN InputTask */
+	uint16_t x = 20;
+	uint16_t y = 20;
+	uint16_t Width = MAX_c*7;
+	uint16_t Height = 12;
+	uint8_t text[7] = "Name : ";
+	uint16_t len = 7*strlen((char *)text);
+
+
+	BSP_LCD_SetTextColor(0xFFEEEEEE);
+	BSP_LCD_FillRect(x+len, y, x+Width-len, Height);
+	BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
+
+	BSP_LCD_DisplayStringAt(x, y, text, LEFT_MODE);
+
+	TS_StateTypeDef  prev_state;
+	TS_StateTypeDef TS_State;
+
+	uint8_t state = 0;
+
+	/* Infinite loop */
+	for(;;)
+	{
+		BSP_TS_GetState(&TS_State);
+		if(TS_State.touchDetected != prev_state.touchDetected && TS_State.touchDetected < 2){
+			prev_state.touchDetected = TS_State.touchDetected;
+			switch (state){
+				case 0:
+					if(TS_State.touchX[0] >= x+len && TS_State.touchX[0] <= x+Width+len &&
+						TS_State.touchY[0] >= y-10 && TS_State.touchY[0] <= y+Height+10){
+						state = 1;
+					}
+					break;
+
+				case 1:
+					if(TS_State.touchX[0] >= x+len && TS_State.touchX[0] <= x+Width+len &&
+							TS_State.touchY[0] >= y-10 && TS_State.touchY[0] <= y+Height+10){
+						state = 2;
+						HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+						/* definition and creation of KB */
+						osThreadDef(KB, KeyboardTask, osPriorityNormal, 0, 2048);
+						KBHandle = osThreadCreate(osThread(KB), NULL);
+
+					} else state = 0;
+					break;
+
+				case 2:
+					if(TS_State.touchY[0] < KEYBOARD_Y) state = 3;
+					break;
+
+				case 3:
+					if(TS_State.touchY[0] < KEYBOARD_Y){
+						state = 0;
+						vTaskDelete(KBHandle);
+						BSP_LCD_SetLayerVisible(1, DISABLE);
+						BSP_LCD_SelectLayer(0);
+					}
+					else state = 2;
+
+				default:
+					state = 0;
+					break;
+			}
+		}
+		osDelay(100);
+	}
+  /* USER CODE END InputTask */
 }
 
  /**
@@ -1178,6 +1535,8 @@ void Error_Handler(void)
   /* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__disable_irq();
+	BSP_LCD_SetTextColor(LCD_COLOR_RED);
+	BSP_LCD_DisplayStringAt(0, 130, (uint8_t *)"ERREUR!", CENTER_MODE);
 	while (1)
 	{
 	}
