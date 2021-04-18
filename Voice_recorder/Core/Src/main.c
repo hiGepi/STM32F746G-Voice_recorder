@@ -76,6 +76,9 @@
 #define BACKSPACE			8
 #define ENTER				10
 
+#define KEYBOARD_X 			0
+#define KEYBOARD_Y			132
+
 #define MAX_c 				30
 /* USER CODE END PD */
 
@@ -110,6 +113,7 @@ osThreadId defaultTaskHandle;
 osThreadId SDHandle;
 osThreadId AudioHandle;
 osThreadId inputHandle;
+osMutexId mutex_LCDHandle;
 /* USER CODE BEGIN PV */
 osThreadId KBHandle;
 uint8_t workBuffer[2 * _MAX_SS];
@@ -123,14 +127,15 @@ typedef enum
 	BUFFER_OFFSET_FULL = 2,
 }BUFFER_StateTypeDef;
 
+
+uint8_t Name[MAX_c] = "";
 uint8_t keyboard[5][10] =	{
 							{'1','2','3','4','5','6','7','8','9','0'},
 							{'a','z','e','r','t','y','u','i','o','p'},
 							{'q','s','d','f','g','h','j','k','l','m'},
-							{0,0,'w','x','c','v','b','n',BACKSPACE,BACKSPACE},
-							{MAJ,MAJ,0,SPACE,SPACE,SPACE,SPACE,0,ENTER,ENTER}
+							{MAJ,MAJ,'w','x','c','v','b','n',BACKSPACE,BACKSPACE},
+							{0,0,SPACE,SPACE,SPACE,SPACE,SPACE,SPACE,ENTER,ENTER}
 							};
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -152,6 +157,7 @@ void InputTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 void write_header(uint32_t N_Bytes_Data);
+void Draw_Keyboard(uint8_t MAJ_ENABLE);
 void KeyboardTask(void const * argument);
 
 void RL_sep(uint16_t* buffer, uint16_t size){
@@ -256,8 +262,9 @@ int main(void)
   BSP_LCD_LayerDefaultInit(0, LCD_FB_START_ADDRESS);
   BSP_LCD_LayerDefaultInit(1, LCD_FB_START_ADDRESS+ BSP_LCD_GetXSize()*BSP_LCD_GetYSize()*4);
   BSP_LCD_DisplayOn();
-  BSP_LCD_SelectLayer(1);
-  BSP_LCD_SetLayerVisible(1, ENABLE);
+  BSP_LCD_SelectLayer(0);
+  BSP_LCD_SetLayerVisible(0, ENABLE);
+  BSP_LCD_SetLayerVisible(1, DISABLE);
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_SetFont(&Font12);
   BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
@@ -273,6 +280,11 @@ int main(void)
 	  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() - 150, (uint8_t *)"TS initialized", CENTER_MODE);
   }
   /* USER CODE END 2 */
+
+  /* Create the mutex(es) */
+  /* definition and creation of mutex_LCD */
+  osMutexDef(mutex_LCD);
+  mutex_LCDHandle = osMutexCreate(osMutex(mutex_LCD));
 
   /* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
@@ -578,9 +590,9 @@ static void MX_LTDC_Init(void)
   pLayerCfg.FBStartAdress = 0xC0000000;
   pLayerCfg.ImageWidth = 480;
   pLayerCfg.ImageHeight = 272;
-  pLayerCfg.Backcolor.Blue = 0;
-  pLayerCfg.Backcolor.Green = 0;
-  pLayerCfg.Backcolor.Red = 0;
+  pLayerCfg.Backcolor.Blue = 255;
+  pLayerCfg.Backcolor.Green = 255;
+  pLayerCfg.Backcolor.Red = 255;
   if (HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg, 0) != HAL_OK)
   {
     Error_Handler();
@@ -595,8 +607,8 @@ static void MX_LTDC_Init(void)
   pLayerCfg1.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
   pLayerCfg1.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
   pLayerCfg1.FBStartAdress = 0xC001FE00;
-  pLayerCfg1.ImageWidth = 0;
-  pLayerCfg1.ImageHeight = 130;
+  pLayerCfg1.ImageWidth = 480;
+  pLayerCfg1.ImageHeight = 140;
   pLayerCfg1.Backcolor.Blue = 0;
   pLayerCfg1.Backcolor.Green = 0;
   pLayerCfg1.Backcolor.Red = 0;
@@ -1215,6 +1227,60 @@ void write_header(uint32_t N_Bytes_Data){
 	f_write(&SDFile, entete, 44, (void*) &byteswritten);
 }
 
+void Draw_Keyboard(uint8_t MAJ_ENABLE){
+	uint16_t y = 132;
+
+	BSP_LCD_SetFont(&Font16);
+	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+	BSP_LCD_FillRect(0, 132, 480, 140);
+
+	BSP_LCD_SetTextColor(LCD_COLOR_GRAY);
+	for(uint8_t i=0; i<5; i++){
+		for(uint8_t j=0; j<10; j++){
+			if(i<3)BSP_LCD_FillRect(j*48+2, y+i*28+2, 44, 24);
+			else if(i==3){
+				if(j == 0){
+					if(MAJ_ENABLE)BSP_LCD_SetTextColor(LCD_COLOR_LIGHTGRAY);
+					BSP_LCD_FillRect(j*48+2, y+i*28+2, 80, 24);
+					if(MAJ_ENABLE)BSP_LCD_SetTextColor(LCD_COLOR_GRAY);
+				}
+				if(j == 8){
+					BSP_LCD_FillRect(j*48+34, y+i*28+2, 60, 24);
+				}
+				else if(j >= 2 && j <= 7)BSP_LCD_FillRect(j*48+2, y+i*28+2, 44, 24);
+			} else {
+				if(j == 8){
+					BSP_LCD_FillRect(j*48+14, y+i*28+2, 80, 24);
+				}
+				if(j == 2)BSP_LCD_FillRect(j*48+2+30, y+i*28+2, 44+48*5-60, 24);
+			}
+		}
+	}
+
+	BSP_LCD_SetBackColor(LCD_COLOR_GRAY);
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+	for(uint8_t i=0; i<5; i++){
+		for(uint8_t j=0; j<10; j++){
+			if(keyboard[i][j] >= '0' && keyboard[i][j] <= '9')BSP_LCD_DisplayChar(j*48+2+16, y+i*28+2+4, keyboard[i][j]);
+			if(keyboard[i][j] >= 'a' && keyboard[i][j] <= 'z')BSP_LCD_DisplayChar(j*48+2+16, y+i*28+2+4, keyboard[i][j]+('A'-'a')*MAJ_ENABLE);
+			if(i == 3 && j == 8){
+				BSP_LCD_DisplayStringAt(j*48+34+15, y+i*28+6, (uint8_t *)"DEL", LEFT_MODE);
+			}
+			if(i == 4 && j == 8){
+				BSP_LCD_DisplayStringAt(j*48+44, y+i*28+6, (uint8_t *)"OK", LEFT_MODE);
+			}
+			if(i == 3 && j == 0){
+				if(MAJ_ENABLE)BSP_LCD_SetBackColor(LCD_COLOR_LIGHTGRAY);
+				BSP_LCD_DisplayStringAt(j*48+2+26, y+i*28+6, (uint8_t *)"MAJ", LEFT_MODE);
+				if(MAJ_ENABLE)BSP_LCD_SetBackColor(LCD_COLOR_GRAY);
+			}
+			if(i == 4 && j == 2){
+				BSP_LCD_DisplayStringAt(230, y+i*28+2, (uint8_t *)"__", LEFT_MODE);
+			}
+		}
+	}
+}
 /* USER CODE BEGIN Header_KeyboardTask */
 /**
 * @brief Function implementing the KB thread.
@@ -1224,13 +1290,22 @@ void write_header(uint32_t N_Bytes_Data){
 /* USER CODE END Header_KeyboardTask */
 void KeyboardTask(void const * argument)
 {
-  /* USER CODE BEGIN KeyboardTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(100);
-  }
-  /* USER CODE END KeyboardTask */
+	/* USER CODE BEGIN KeyboardTask */
+	BSP_LCD_SetLayerVisible(1, ENABLE);
+	BSP_LCD_SelectLayer(1);
+	BSP_LCD_Clear(0);
+
+	xSemaphoreTake(mutex_LCDHandle, portMAX_DELAY);
+	Draw_Keyboard(1);
+	xSemaphoreGive(mutex_LCDHandle);
+
+	/* Infinite loop */
+	for(;;)
+	{
+
+		osDelay(100);
+	}
+	/* USER CODE END KeyboardTask */
 }
 
 /* USER CODE END 4 */
@@ -1366,11 +1441,14 @@ void InputTask(void const * argument)
 	uint16_t y = 20;
 	uint16_t Width = MAX_c*7;
 	uint16_t Height = 12;
+	uint8_t text[7] = "Name : ";
+	uint16_t len = 7*strlen((char *)text);
+
 
 	BSP_LCD_SetTextColor(0xFFEEEEEE);
-	BSP_LCD_FillRect(x+6*7, y, x+Width-6*7, Height);
+	BSP_LCD_FillRect(x+len, y, x+Width-len, Height);
 	BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
-	uint8_t text[50] = "Name : ";
+
 	BSP_LCD_DisplayStringAt(x, y, text, LEFT_MODE);
 
 	TS_StateTypeDef  prev_state;
@@ -1386,16 +1464,16 @@ void InputTask(void const * argument)
 			prev_state.touchDetected = TS_State.touchDetected;
 			switch (state){
 				case 0:
-					if(TS_State.touchX[0] >= x && TS_State.touchX[0] <= x+Width &&
+					if(TS_State.touchX[0] >= x+len && TS_State.touchX[0] <= x+Width+len &&
 						TS_State.touchY[0] >= y-10 && TS_State.touchY[0] <= y+Height+10){
 						state = 1;
 					}
 					break;
 
 				case 1:
-					if(TS_State.touchX[0] >= x && TS_State.touchX[0] <= x+Width &&
+					if(TS_State.touchX[0] >= x+len && TS_State.touchX[0] <= x+Width+len &&
 							TS_State.touchY[0] >= y-10 && TS_State.touchY[0] <= y+Height+10){
-						state = 0;
+						state = 2;
 						HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
 						/* definition and creation of KB */
 						osThreadDef(KB, KeyboardTask, osPriorityNormal, 0, 2048);
@@ -1403,6 +1481,19 @@ void InputTask(void const * argument)
 
 					} else state = 0;
 					break;
+
+				case 2:
+					if(TS_State.touchY[0] < KEYBOARD_Y) state = 3;
+					break;
+
+				case 3:
+					if(TS_State.touchY[0] < KEYBOARD_Y){
+						state = 0;
+						vTaskDelete(KBHandle);
+						BSP_LCD_SetLayerVisible(1, DISABLE);
+						BSP_LCD_SelectLayer(0);
+					}
+					else state = 2;
 
 				default:
 					state = 0;
