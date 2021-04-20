@@ -72,7 +72,7 @@
 
 // Keyboard
 #define MAJ					20
-#define SPACE				32
+#define SPACE				'_'
 #define BACKSPACE			8
 #define ENTER				10
 
@@ -308,7 +308,7 @@ int main(void)
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* definition and creation of SD */
-  osThreadDef(SD, SDTask, osPriorityNormal, 0, 4096);
+  osThreadDef(SD, SDTask, osPriorityNormal, 0, 20000);
   SDHandle = osThreadCreate(osThread(SD), NULL);
 
   /* definition and creation of Audio */
@@ -1110,14 +1110,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PB2 */
-  GPIO_InitStruct.Pin = GPIO_PIN_2;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = GPIO_AF9_QUADSPI;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
   /*Configure GPIO pins : QSPI_D1_Pin QSPI_D3_Pin QSPI_D0_Pin */
   GPIO_InitStruct.Pin = QSPI_D1_Pin|QSPI_D3_Pin|QSPI_D0_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -1291,8 +1283,12 @@ void Draw_Keyboard(uint8_t MAJ_ENABLE){
 void KeyboardTask(void const * argument)
 {
 	/* USER CODE BEGIN KeyboardTask */
-	uint8_t state = 0, idx=strlen(Name), maj_en = 0;
+	uint8_t state = 0, idx=strlen((char *)Name), maj_en = 0;
 	uint16_t Pressed_X, Pressed_Y;
+	uint16_t x = 20;
+	uint16_t y = 20;
+	uint16_t Width = MAX_c*7;
+	uint16_t Height = 12;
 
 	TS_StateTypeDef  prev_state;
 	TS_StateTypeDef TS_State;
@@ -1315,7 +1311,7 @@ void KeyboardTask(void const * argument)
 		BSP_LCD_SetFont(&Font12);
 		BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 		BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
-		BSP_LCD_DisplayStringAt(69, 20, Name, LEFT_MODE);
+		BSP_LCD_DisplayStringAt(69, y, Name, LEFT_MODE);
 		xSemaphoreGive(mutex_LCDHandle);
 
 		BSP_TS_GetState(&TS_State);
@@ -1341,8 +1337,16 @@ void KeyboardTask(void const * argument)
 						}
 
 					} else if(keyboard[Pressed_Y][Pressed_X] == ENTER){
+						xSemaphoreTake(mutex_LCDHandle, portMAX_DELAY);
+						BSP_LCD_SetTextColor(0xFFEEEEEE);
+						BSP_LCD_FillRect(x+idx*7, y, x+Width-7*7, Height);
+						BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
+						xSemaphoreGive(mutex_LCDHandle);
 						BSP_LCD_SetLayerVisible(1, DISABLE);
 						BSP_LCD_SelectLayer(0);
+						/* definition and creation of SD */
+						osThreadDef(SD, SDTask, osPriorityHigh, 0, 6096);
+						SDHandle = osThreadCreate(osThread(SD), NULL);
 						vTaskResume(inputHandle);
 						vTaskDelete(KBHandle);
 
@@ -1356,6 +1360,11 @@ void KeyboardTask(void const * argument)
 
 
 				} else if(TS_State.touchY[0] < 132){
+					xSemaphoreTake(mutex_LCDHandle, portMAX_DELAY);
+					BSP_LCD_SetTextColor(0xFFEEEEEE);
+					BSP_LCD_FillRect(x+idx*7, y, x+Width-7*7, Height);
+					BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
+					xSemaphoreGive(mutex_LCDHandle);
 					BSP_LCD_SetLayerVisible(1, DISABLE);
 					BSP_LCD_SelectLayer(0);
 					vTaskResume(inputHandle);
@@ -1404,43 +1413,49 @@ void StartDefaultTask(void const * argument)
 void SDTask(void const * argument)
 {
   /* USER CODE BEGIN SDTask */
-//	FRESULT res; /* FatFs function common result code */
-//	uint32_t byteswritten; /* File write/read counts */
-//	uint8_t wtext[] = "La version v1.16.1 ne devrait plus poser de soucis :)"; /* File write buffer */
-//	uint8_t rtext[_MAX_SS];/* File read buffer */
-//	if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0) != FR_OK)
-//	{
-//		Error_Handler();
-//	}
-//	else
-//	{
-//		if(f_mkfs((TCHAR const*)SDPath, FM_ANY, 0, rtext, sizeof(rtext)) != FR_OK)
-//		{
-//			Error_Handler();
-//		}
-//		else
-//		{
-//			//Open file for writing (Create)
-//			if(f_open(&SDFile, "EEA.TXT", FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
-//			{
-//				Error_Handler();
-//			}
-//			else
-//			{
-//				//Write to the text file
-//				res = f_write(&SDFile, wtext, strlen((char *)wtext), (void *)&byteswritten);
-//				if((byteswritten == 0) || (res != FR_OK))
-//				{
-//					Error_Handler();
-//				}
-//				else
-//				{
-//					f_close(&SDFile);
-//				}
-//			}
-//		}
-//	}
-//	f_mount(&SDFatFS, (TCHAR const*)NULL, 0);
+	FRESULT res; /* FatFs function common result code */
+	uint32_t byteswritten; /* File write/read counts */
+	uint8_t wtext[] = "La version v1.16.1 ne devrait plus poser de soucis :)"; /* File write buffer */
+	uint8_t file_name[34];
+	sprintf((char *) file_name, "%s.TXT",Name);
+	BSP_LCD_DisplayStringAt(20, 80, file_name, LEFT_MODE);
+	uint8_t rtext[_MAX_SS];/* File read buffer */
+	if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0) != FR_OK)
+	{
+		Error_Handler();
+	}
+	else
+	{
+		if(f_mkfs((TCHAR const*)SDPath, FM_ANY, 0, rtext, sizeof(rtext)) != FR_OK)
+		{
+			Error_Handler();
+		}
+		else
+		{
+			//Open file for writing (Create)
+			if(f_open(&SDFile,"EEA.TXT", FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
+			{
+
+				Error_Handler();
+			}
+			else
+			{
+				//Write to the text file
+				res = f_write(&SDFile, wtext, strlen((char *)wtext), (void *)&byteswritten);
+				if((byteswritten == 0) || (res != FR_OK))
+				{
+					Error_Handler();
+				}
+				else
+				{
+					f_close(&SDFile);
+				}
+			}
+		}
+	}
+	BSP_LCD_DisplayStringAt(100, 80, "OK", LEFT_MODE);
+	//f_mount(&SDFatFS, (TCHAR const*)NULL, 0);
+	vTaskDelete(SDHandle);
 	/* Infinite loop */
 	for(;;)
 	{
