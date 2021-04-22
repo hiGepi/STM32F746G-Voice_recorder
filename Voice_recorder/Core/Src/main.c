@@ -308,8 +308,8 @@ int main(void)
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* definition and creation of SD */
-  osThreadDef(SD, SDTask, osPriorityNormal, 0, 20000);
-  SDHandle = osThreadCreate(osThread(SD), NULL);
+//  osThreadDef(SD, SDTask, osPriorityNormal, 0, 20000);
+//  SDHandle = osThreadCreate(osThread(SD), NULL);
 
   /* definition and creation of Audio */
   osThreadDef(Audio, AudioTask, osPriorityNormal, 0, 2048);
@@ -1344,9 +1344,13 @@ void KeyboardTask(void const * argument)
 						xSemaphoreGive(mutex_LCDHandle);
 						BSP_LCD_SetLayerVisible(1, DISABLE);
 						BSP_LCD_SelectLayer(0);
+						if(strncmp((char *)Name,"circle_",7) == 0){
+							BSP_LCD_DrawCircle((Name[7]-'0')*100+(Name[8]-'0')*10+(Name[9]-'0'), (Name[11]-'0')*100+(Name[12]-'0')*10+(Name[13]-'0'), (Name[15]-'0')*10+Name[16]-'0');
+						} else {
 						/* definition and creation of SD */
-						osThreadDef(SD, SDTask, osPriorityHigh, 0, 6096);
-						SDHandle = osThreadCreate(osThread(SD), NULL);
+							osThreadDef(SD, SDTask, osPriorityHigh, 0, 6096);
+							SDHandle = osThreadCreate(osThread(SD), NULL);
+						}
 						vTaskResume(inputHandle);
 						vTaskDelete(KBHandle);
 

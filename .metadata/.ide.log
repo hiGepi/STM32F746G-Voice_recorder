@@ -28485,3 +28485,46 @@ java.util.ConcurrentModificationException
 2021-04-20 14:54:06,573 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xDelayedTaskList2
 2021-04-20 14:54:06,574 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xPendingReadyList
 2021-04-20 14:54:06,574 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xSuspendedTaskList
+2021-04-23 00:53:29,906 [INFO] Activator:170 - 
+
+
+2021-04-23 00:53:29,907 [INFO] Activator:171 - !SESSION log4j initialized
+2021-04-23 00:53:52,928 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] Managed Build system manifest file error: Could not load icon "icons/chip.png".
+2021-04-23 00:53:52,929 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] Managed Build system manifest file error: Could not load icon "icons/chip.png".
+2021-04-23 00:53:52,932 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] Managed Build system manifest file error: Could not load icon "icons/chip.png".
+2021-04-23 01:06:10,109 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[0]
+2021-04-23 01:06:10,110 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[1]
+2021-04-23 01:06:10,110 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[2]
+2021-04-23 01:06:10,111 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[3]
+2021-04-23 01:06:10,111 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[4]
+2021-04-23 01:06:10,111 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[5]
+2021-04-23 01:06:10,112 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[6]
+2021-04-23 01:06:10,112 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xDelayedTaskList1
+2021-04-23 01:06:10,112 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xDelayedTaskList2
+2021-04-23 01:06:10,113 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xPendingReadyList
+2021-04-23 01:06:10,113 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xSuspendedTaskList
+2021-04-23 01:10:00,155 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[1]
+2021-04-23 01:10:00,156 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[2]
+2021-04-23 01:10:00,156 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[3]
+2021-04-23 01:10:00,156 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[4]
+2021-04-23 01:10:00,157 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[5]
+2021-04-23 01:10:00,158 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[6]
+2021-04-23 01:10:00,158 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xDelayedTaskList1
+2021-04-23 01:10:00,158 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xDelayedTaskList2
+2021-04-23 01:10:00,159 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xPendingReadyList
+2021-04-23 01:10:00,159 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xSuspendedTaskList
+2021-04-23 01:10:00,299 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xDelayedTaskList1
+2021-04-23 01:10:00,300 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xDelayedTaskList2
+2021-04-23 01:10:00,300 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xPendingReadyList
+2021-04-23 01:10:00,300 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xSuspendedTaskList
+2021-04-23 01:15:50,038 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[0]
+2021-04-23 01:15:50,038 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[1]
+2021-04-23 01:15:50,039 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[2]
+2021-04-23 01:15:50,039 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[3]
+2021-04-23 01:15:50,039 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[4]
+2021-04-23 01:15:50,040 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[5]
+2021-04-23 01:15:50,040 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL pxReadyTasksLists[6]
+2021-04-23 01:15:50,041 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xDelayedTaskList1
+2021-04-23 01:15:50,041 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xDelayedTaskList2
+2021-04-23 01:15:50,041 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xPendingReadyList
+2021-04-23 01:15:50,042 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] FAIL xSuspendedTaskList
