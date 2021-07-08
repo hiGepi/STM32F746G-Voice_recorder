@@ -119,10 +119,10 @@
 <p>Paricipant à un TER sur de la reconnaissance vocale, la génération d'un modèle de reconnaissance vocale nécessite d'avoir un dictionnaire de mot et des enregistrements audio associés. Ce dictionnaire contient nottament des nom de cellules qui ne se trouvent pas dans les bases de données open-source. Ainsi, nous avons créé un script Matlab permettant d'enregistrer la voix de volontaires. Afin de permettre d'enregistrer un plus grand nombre de données, j'ai décidé de porter ce script sous forme d'application sur la carte STM32F746G.</p>
 <p>Voici donc la nouvelle carte.</p>
 <p><center><img src="img/intro/Carte.png" alt="Carte de développement" width="500"/></center>
-<em>Carte STM32F746G-Discovery et son extension</em></p>
+<center><em>Carte STM32F746G-Discovery et son extension</em></center></p>
 <p>Ainsi que le schéma synoptique expliquant le fonctionnement du projet.</p>
 <p><img src="img/intro/Synoptique.png" alt="Synoptique"/>
-<em>Schéma synoptique</em></p>
+<center><em>Schéma synoptique</em></center></p>
 <h2 id="besoins-du-projet">Besoins du projet</h2>
 <p>Nous avons besoin de receuillir des fichiers audio pour une liste de mot appelée dictionnaire. Pour ce faire, la carte dispose d'un Codec audio permettant de faire l'acquisition de la voix par l'interface de deux microphones sur la carte. Le but étant de pouvoir récupérer ces acquisitions pour les donner à un réseau de neuronnes conçu pour générer un modèle de reconnaissance vocale, il faut les enregistrer sur un espace de stockage amovible. </p>
 <p>Bingo ! il y a un slot pour carte micro-SD. </p>
@@ -213,5 +213,5 @@ NOTES IMPORTANTES :  Les octets des mots sont stockés sous la forme Petit-bouti
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-04-18 14:56:07.215185+00:00
+Build Date UTC : 2021-07-08 22:17:34.010402+00:00
 -->
