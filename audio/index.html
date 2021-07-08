@@ -71,6 +71,36 @@
     <li class="toctree-l2"><a class="reference internal" href="#ajout-de-la-bibliotheque">Ajout de la bibliothèque</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#fonctions-principales">Fonctions principales</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#initialisations">Initialisations</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#initialiser-lenregistrement">Initialiser l'enregistrement</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#initialiser-le-peripherique-de-sortie">Initialiser le périphérique de sortie</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#gestion-du-stream-audio">Gestion du stream audio</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#jouer-un-stream-audio-depuis-un-buffer-de-donnees">Jouer un stream audio depuis un buffer de données</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#pause">Pause</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#resume">Resume</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#arret">Arrêt</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#regler-le-volume-de-sortie">Régler le volume de sortie</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#callbacks-de-transfert-sai">Callbacks de transfert SAI</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#callbacks-denregistrement">Callbacks d'enregistrement</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#code-erreur">Code erreur</a>
     </li>
     </ul>
                     </li>
@@ -141,6 +171,70 @@ La communication avec le codec se fera à l'aide de l'interface SAI.</p>
 <p><img alt="Diagramme SAI" src="../img/audio/config_sai_2.png" /></p>
 <p>Une fois tout ceci fait, on peut rajouter les headers et fichiers sources dans notre projet.</p>
 <h2 id="fonctions-principales">Fonctions principales</h2>
+<h3 id="initialisations">Initialisations</h3>
+<h4 id="initialiser-lenregistrement">Initialiser l'enregistrement</h4>
+<pre><code class="language-txt">uint8_t BSP_AUDIO_IN_InitEx (
+    uint16_t InputDevice    /* INPUT_DEVICE_DIGITAL_MICROPHONE_2 or INPUT_DEVICE_INPUT_LINE_1 */
+    uint32_t AudioFreq,     /* Audio frequency to be configured for the SAI peripheral */
+    uint32_t BitRes,        /* Audio frequency to be configured */
+    uint32_t ChnlNbr        /* Channel number */
+)
+</code></pre>
+<h4 id="initialiser-le-peripherique-de-sortie">Initialiser le périphérique de sortie</h4>
+<pre><code class="language-txt">uint8_t BSP_AUDIO_OUT_Init (
+    uint16_t OutputDevice,  /* OUTPUT_DEVICE_SPEAKER, OUTPUT_DEVICE_HEADPHONE,
+                            or OUTPUT_DEVICE_BOTH */
+    uint8_t Volume,         /* Initial volume level (from 0 (Mute) to 100 (Max)) */
+    uint32_t AudioFreq      /* Audio frequency used to play the audio stream */
+    )
+</code></pre>
+<h3 id="gestion-du-stream-audio">Gestion du stream audio</h3>
+<h4 id="jouer-un-stream-audio-depuis-un-buffer-de-donnees">Jouer un stream audio depuis un buffer de données</h4>
+<pre><code class="language-txt">uint8_t BSP_AUDIO_OUT_Play (
+    uint16_t *pBuffer,  /* Pointer to the buffer */
+    uint32_t Size)      /* Number of audio data in BYTES unit */
+*** Dans la mémoire, les octets sont alternés entre canal gauche puis canal droit
+</code></pre>
+<h4 id="pause">Pause</h4>
+<pre><code class="language-txt">uint8_t BSP_AUDIO_OUT_Pause(void)
+</code></pre>
+<h4 id="resume">Resume</h4>
+<pre><code class="language-txt">uint8_t BSP_AUDIO_OUT_Resume(void)
+</code></pre>
+<h4 id="arret">Arrêt</h4>
+<pre><code class="language-txt">uint8_t BSP_AUDIO_OUT_Stop(
+    uint32_t Option 
+    /*  - CODEC_PDWN_SW: for software power off (by writing registers).
+                            Then no need to reconfigure the Codec after power on.
+        - CODEC_PDWN_HW: completely shut down the codec (physically).
+                            Then need to reconfigure the Codec after power on. */
+    )
+</code></pre>
+<h4 id="regler-le-volume-de-sortie">Régler le volume de sortie</h4>
+<pre><code class="language-txt">uint8_t BSP_AUDIO_OUT_SetVolume(
+    uint8_t Volume  /* Volume level to be set in percentage from 0% to 100% (0 for
+                       Mute and 100 for Max volume level) */
+)
+</code></pre>
+<h3 id="callbacks-de-transfert-sai">Callbacks de transfert SAI</h3>
+<pre><code class="language-txt">void HAL_SAI_TxCpltCallback(
+    SAI_HandleTypeDef *hsai /* SAI handle */
+)
+</code></pre>
+<pre><code class="language-txt">void HAL_SAI_TxHalfCpltCallback(
+    SAI_HandleTypeDef *hsai /* SAI handle */
+)
+</code></pre>
+<h3 id="callbacks-denregistrement">Callbacks d'enregistrement</h3>
+<pre><code class="language-txt">void BSP_AUDIO_IN_HalfTransfer_CallBack(void)
+</code></pre>
+<pre><code class="language-txt">void BSP_AUDIO_IN_TransferComplete_CallBack(void)
+</code></pre>
+<h2 id="code-erreur">Code erreur</h2>
+<pre><code class="language-txt">AUDIO_OK                            ((uint8_t)0)
+AUDIO_ERROR                         ((uint8_t)1)
+AUDIO_TIMEOUT                       ((uint8_t)2)
+</code></pre>
               
             </div>
           </div>
