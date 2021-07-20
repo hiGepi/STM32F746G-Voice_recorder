@@ -48,4 +48,117 @@ Enfin, on n'oubliera pas de changer la configuration du connecteur dans Project 
 
 <center>![Configuration Linker](img/sd/config_linker.png)</center>
 
+
+<body>
+  <p style="color:#FF0000";>Attention particulière à l'utilisation de la carteSD avec FreeRTOS, il se peut qu'il y ai certaines collisions dans la mémoire ! Il ne faut pas dépasser 60000 octets dans l'allocation à FreeRTOS.</p>
+
+  <p style="color:#FF0000";>Il ne faut pas non plus dépasser les 4096 octets par tâche au quel cas même problème.</p>
+
+  <p style="color:#FF0000";>Les noms des fichiers sont limités à 10 caractères, faites donc bien attention ! (L'erreur sera reportée avec le code erreur 6)</p>
+</body>
+ 
+
 ## Fonctions principales
+
+### Gestion de la carte SD
+#### Monter/démonter la carte SD
+```txt
+FRESULT f_mount (
+	FATFS* fs,			/* Pointer to the file system object (NULL:unmount)*/
+	const TCHAR* path,	/* Logical drive number to be mounted/unmounted */
+	BYTE opt			/* Mode option 0:Do not mount (delayed mount), 1:Mount immediately */
+)
+```
+#### Créer un volume
+```txt
+FRESULT f_mkfs (
+	const TCHAR* path,	/* Logical drive number */
+	BYTE opt,			/* Format option */
+	DWORD au,			/* Size of allocation unit (cluster) [byte] */
+	void* work,			/* Pointer to working buffer */
+	UINT len			/* Size of working buffer */
+)
+```
+
+### Gestion des données
+
+#### Ouvrir ou créer un fichier
+```txt
+RESULT f_open (
+	FIL* fp,			/* Pointer to the blank file object */
+	const TCHAR* path,	/* Pointer to the file name */
+	BYTE mode			/* Access mode and file open mode flags */
+)
+```
+
+#### Lire dans un fichier
+```txt
+FRESULT f_read (
+	FIL* fp, 	/* Pointer to the file object */
+	void* buff,	/* Pointer to data buffer */
+	UINT btr,	/* Number of bytes to read */
+	UINT* br	/* Pointer to number of bytes read */
+)
+```
+#### Ecrire dans un fichier
+```txt
+FRESULT f_write (
+	FIL* fp,			/* Pointer to the file object */
+	const void* buff,	/* Pointer to the data to be written */
+	UINT btw,			/* Number of bytes to write */
+	UINT* bw			/* Pointer to number of bytes written */
+)
+```
+
+#### Ouvrir un répertoire
+```txt
+FRESULT f_opendir (
+	DIR* dp,			/* Pointer to directory object to create */
+	const TCHAR* path	/* Pointer to the directory path */
+)
+```
+
+#### Fermer un répertoire
+```txt
+FRESULT f_closedir (
+	DIR *dp		/* Pointer to the directory object to be closed */
+)
+```
+
+#### Créer un répertoire
+```txt
+FRESULT f_mkdir (
+	const TCHAR* path		/* Pointer to the directory path */
+)
+```
+
+#### Changer de répertoire
+```txt
+FRESULT f_chdir (
+	const TCHAR* path	/* Pointer to the directory path */
+)
+```
+
+## Codes erreur
+```txt
+FR_OK = 0,				/* (0) Succeeded */
+FR_DISK_ERR,			/* (1) A hard error occurred in the low level disk I/O layer */
+FR_INT_ERR,				/* (2) Assertion failed */
+FR_NOT_READY,			/* (3) The physical drive cannot work */
+FR_NO_FILE,				/* (4) Could not find the file */
+FR_NO_PATH,				/* (5) Could not find the path */
+FR_INVALID_NAME,		/* (6) The path name format is invalid */
+FR_DENIED,				/* (7) Access denied due to prohibited access or directory full */
+FR_EXIST,				/* (8) Access denied due to prohibited access */
+FR_INVALID_OBJECT,		/* (9) The file/directory object is invalid */
+FR_WRITE_PROTECTED,		/* (10) The physical drive is write protected */
+FR_INVALID_DRIVE,		/* (11) The logical drive number is invalid */
+FR_NOT_ENABLED,			/* (12) The volume has no work area */
+FR_NO_FILESYSTEM,		/* (13) There is no valid FAT volume */
+FR_MKFS_ABORTED,		/* (14) The f_mkfs() aborted due to any problem */
+FR_TIMEOUT,				/* (15) Could not get a grant to access the volume within defined period */
+FR_LOCKED,				/* (16) The operation is rejected according to the file sharing policy */
+FR_NOT_ENOUGH_CORE,		/* (17) LFN working buffer could not be allocated */
+FR_TOO_MANY_OPEN_FILES,	/* (18) Number of open files > _FS_LOCK */
+FR_INVALID_PARAMETER	/* (19) Given parameter is invalid */
+```

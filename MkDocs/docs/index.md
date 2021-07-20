@@ -57,3 +57,7 @@ NOTES IMPORTANTES :  Les octets des mots sont stockés sous la forme Petit-bouti
 ```
 
 On remarque la nécessité de connaître la taille de l'échantillon à sauvegarder. La durée d'enregistrement de chaque mots n'excédent pas 4 secondes, soit pour une fréquence d'échantillonnage de 16 kHz, une taille de 64 Ko en mono. La taille de la RAM dont dispose la carte STM32 est de 340 Ko, il n'y aura a priori pas de problème majeur pour stocker chaque échantillon sur la carte entre deux écritures sur la carte SD. Pour des enregistrements plus conséquents, on pourra toujours utiliser la SDRAM pouvant stocker jusqu'à 64 Mo.
+
+## Problèmes rencontrés
+
+La partie posant le plus de soucis est la carteSD ainsi que la mémoire allouée à FreeRTOS et aux tâches. Le premier soucis apparaît à une allocation supérieure à 60000 octets à freeRTOS où le formatage se passe correctement mais l'écriture d'un fichier indique un mauvais formatage. Le second apparaît à l'allocation de la mémoire aux tâches, une allocation trop importante (>4096) peut entraîner un disfonctionnement. De plus, la bibliothèque de fonctionnement de la carte SD n'est pas entièrement FreeRTOS proof. En effet, certaine fonctionnalités sont bloquées lors de la configuration du .ioc (elles ne sont pas forcément bloquées à la sélection, cependant le programme ne fonctionne plus une fois compilé).

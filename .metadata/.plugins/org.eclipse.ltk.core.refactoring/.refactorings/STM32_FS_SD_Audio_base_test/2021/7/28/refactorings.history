@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;STM32_FS_SD_Audio_base_test/STM32_FS_SD_Audio.ioc&apos; to &apos;STM32_FS_SD_Audio_base_test.ioc&apos;" description="Rename resource &apos;STM32_FS_SD_Audio.ioc&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="STM32_FS_SD_Audio.ioc" name="STM32_FS_SD_Audio_base_test.ioc" stamp="1626619741497" updateReferences="true"/>
+</session>

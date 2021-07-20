@@ -65,6 +65,36 @@
     <li class="toctree-l2"><a class="reference internal" href="#ajout-la-bibliotheque-sd">Ajout la bibliothèque SD</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#fonctions-principales">Fonctions principales</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#gestion-de-la-carte-sd">Gestion de la carte SD</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#monterdemonter-la-carte-sd">Monter/démonter la carte SD</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#creer-un-volume">Créer un volume</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#gestion-des-donnees">Gestion des données</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#ouvrir-ou-creer-un-fichier">Ouvrir ou créer un fichier</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#lire-dans-un-fichier">Lire dans un fichier</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ecrire-dans-un-fichier">Ecrire dans un fichier</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ouvrir-un-repertoire">Ouvrir un répertoire</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#fermer-un-repertoire">Fermer un répertoire</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#creer-un-repertoire">Créer un répertoire</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#changer-de-repertoire">Changer de répertoire</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#codes-erreur">Codes erreur</a>
     </li>
     </ul>
                     </li>
@@ -124,7 +154,7 @@ La communication avec la carte SD se fera à l'aide de l'interface SDMMC ainsi q
 <p>L'interface SDMMC permet la communication avec des MultiMediaCards (MMC), Secure Digital (SD) memory cards et autres périphériques SD (Avec une fréquence d'horloge allant jusqu'à 50 Mhz). L'interface SDMMC permet de gérer des bus de données de 1-bit, 4-bits et 8-bits.</p>
 <p>Parmi 3 interfaces possibles (SPI, SDIO,SDMMC) pour communiquer avec la carte SD l'interface SDMMC est la plus rapide, flexible mais plus complexe et possédant plus d'E/S.</p>
 <p><center><img alt="Diagramme SDMMC" src="../img/sd/sdmmc_diagram.PNG" /></center>
-<em>Diagramme SDMMC</em></p>
+<center><em>Diagramme SDMMC</em></center></p>
 <p><a href="https://www.st.com/content/ccc/resource/training/technical/product_training/group0/a7/61/d8/cf/a0/c8/4d/08/STM32F7_Peripheral_SDMMC/files/STM32F7_Peripheral_SDMMC.pdf/_jcr_content/translations/en.STM32F7_Peripheral_SDMMC.pdf">Lien présentation SDMMC</a></p>
 <p><a href="https://www.st.com/resource/en/user_manual/dm00189702-description-of-stm32f7-hal-and-lowlayer-drivers-stmicroelectronics.pdf#page=613">Lien doc SDMMC</a></p>
 <h3 id="fatfs">FatFs</h3>
@@ -142,7 +172,99 @@ La communication avec la carte SD se fera à l'aide de l'interface SDMMC ainsi q
 <p><center><img alt="Configuration FatFs" src="../img/sd/config_fatfs_2.png" /></center></p>
 <p>Enfin, on n'oubliera pas de changer la configuration du connecteur dans Project Manager.</p>
 <p><center><img alt="Configuration Linker" src="../img/sd/config_linker.png" /></center></p>
+<body>
+  <p style="color:#FF0000";>Attention particulière à l'utilisation de la carteSD avec FreeRTOS, il se peut qu'il y ai certaines collisions dans la mémoire ! Il ne faut pas dépasser 60000 octets dans l'allocation à FreeRTOS.</p>
+
+  <p style="color:#FF0000";>Il ne faut pas non plus dépasser les 4096 octets par tâche au quel cas même problème.</p>
+
+  <p style="color:#FF0000";>Les noms des fichiers sont limités à 10 caractères, faites donc bien attention ! (L'erreur sera reportée avec le code erreur 6)</p>
+</body>
+
 <h2 id="fonctions-principales">Fonctions principales</h2>
+<h3 id="gestion-de-la-carte-sd">Gestion de la carte SD</h3>
+<h4 id="monterdemonter-la-carte-sd">Monter/démonter la carte SD</h4>
+<pre><code class="language-txt">FRESULT f_mount (
+    FATFS* fs,          /* Pointer to the file system object (NULL:unmount)*/
+    const TCHAR* path,  /* Logical drive number to be mounted/unmounted */
+    BYTE opt            /* Mode option 0:Do not mount (delayed mount), 1:Mount immediately */
+)
+</code></pre>
+<h4 id="creer-un-volume">Créer un volume</h4>
+<pre><code class="language-txt">FRESULT f_mkfs (
+    const TCHAR* path,  /* Logical drive number */
+    BYTE opt,           /* Format option */
+    DWORD au,           /* Size of allocation unit (cluster) [byte] */
+    void* work,         /* Pointer to working buffer */
+    UINT len            /* Size of working buffer */
+)
+</code></pre>
+<h3 id="gestion-des-donnees">Gestion des données</h3>
+<h4 id="ouvrir-ou-creer-un-fichier">Ouvrir ou créer un fichier</h4>
+<pre><code class="language-txt">RESULT f_open (
+    FIL* fp,            /* Pointer to the blank file object */
+    const TCHAR* path,  /* Pointer to the file name */
+    BYTE mode           /* Access mode and file open mode flags */
+)
+</code></pre>
+<h4 id="lire-dans-un-fichier">Lire dans un fichier</h4>
+<pre><code class="language-txt">FRESULT f_read (
+    FIL* fp,    /* Pointer to the file object */
+    void* buff, /* Pointer to data buffer */
+    UINT btr,   /* Number of bytes to read */
+    UINT* br    /* Pointer to number of bytes read */
+)
+</code></pre>
+<h4 id="ecrire-dans-un-fichier">Ecrire dans un fichier</h4>
+<pre><code class="language-txt">FRESULT f_write (
+    FIL* fp,            /* Pointer to the file object */
+    const void* buff,   /* Pointer to the data to be written */
+    UINT btw,           /* Number of bytes to write */
+    UINT* bw            /* Pointer to number of bytes written */
+)
+</code></pre>
+<h4 id="ouvrir-un-repertoire">Ouvrir un répertoire</h4>
+<pre><code class="language-txt">FRESULT f_opendir (
+    DIR* dp,            /* Pointer to directory object to create */
+    const TCHAR* path   /* Pointer to the directory path */
+)
+</code></pre>
+<h4 id="fermer-un-repertoire">Fermer un répertoire</h4>
+<pre><code class="language-txt">FRESULT f_closedir (
+    DIR *dp     /* Pointer to the directory object to be closed */
+)
+</code></pre>
+<h4 id="creer-un-repertoire">Créer un répertoire</h4>
+<pre><code class="language-txt">FRESULT f_mkdir (
+    const TCHAR* path       /* Pointer to the directory path */
+)
+</code></pre>
+<h4 id="changer-de-repertoire">Changer de répertoire</h4>
+<pre><code class="language-txt">FRESULT f_chdir (
+    const TCHAR* path   /* Pointer to the directory path */
+)
+</code></pre>
+<h2 id="codes-erreur">Codes erreur</h2>
+<pre><code class="language-txt">FR_OK = 0,              /* (0) Succeeded */
+FR_DISK_ERR,            /* (1) A hard error occurred in the low level disk I/O layer */
+FR_INT_ERR,             /* (2) Assertion failed */
+FR_NOT_READY,           /* (3) The physical drive cannot work */
+FR_NO_FILE,             /* (4) Could not find the file */
+FR_NO_PATH,             /* (5) Could not find the path */
+FR_INVALID_NAME,        /* (6) The path name format is invalid */
+FR_DENIED,              /* (7) Access denied due to prohibited access or directory full */
+FR_EXIST,               /* (8) Access denied due to prohibited access */
+FR_INVALID_OBJECT,      /* (9) The file/directory object is invalid */
+FR_WRITE_PROTECTED,     /* (10) The physical drive is write protected */
+FR_INVALID_DRIVE,       /* (11) The logical drive number is invalid */
+FR_NOT_ENABLED,         /* (12) The volume has no work area */
+FR_NO_FILESYSTEM,       /* (13) There is no valid FAT volume */
+FR_MKFS_ABORTED,        /* (14) The f_mkfs() aborted due to any problem */
+FR_TIMEOUT,             /* (15) Could not get a grant to access the volume within defined period */
+FR_LOCKED,              /* (16) The operation is rejected according to the file sharing policy */
+FR_NOT_ENOUGH_CORE,     /* (17) LFN working buffer could not be allocated */
+FR_TOO_MANY_OPEN_FILES, /* (18) Number of open files &gt; _FS_LOCK */
+FR_INVALID_PARAMETER    /* (19) Given parameter is invalid */
+</code></pre>
               
             </div>
           </div>
