@@ -173,7 +173,11 @@ La communication avec la carte SD se fera à l'aide de l'interface SDMMC ainsi q
 <p>Enfin, on n'oubliera pas de changer la configuration du connecteur dans Project Manager.</p>
 <p><center><img alt="Configuration Linker" src="../img/sd/config_linker.png" /></center></p>
 <body>
-  <p style="color:#FF0000";>Attention particulière à l'utilisation de la SDRAM en parallèle. Vérifier bien que les mémoires utilisées de causent pas de soucis auquel cas prenez garde à la corruption de la carte !</p>
+  <p style="color:#FF0000";>Attention particulière à l'utilisation de la carteSD avec FreeRTOS, il se peut qu'il y ai certaines collisions dans la mémoire ! Il ne faut pas dépasser 60000 octets dans l'allocation à FreeRTOS.</p>
+
+  <p style="color:#FF0000";>Il ne faut pas non plus dépasser les 4096 octets par tâche au quel cas même problème.</p>
+
+  <p style="color:#FF0000";>Les noms des fichiers sont limités à 10 caractères, faites donc bien attention ! (L'erreur sera reportée avec le code erreur 6)</p>
 </body>
 
 <h2 id="fonctions-principales">Fonctions principales</h2>
